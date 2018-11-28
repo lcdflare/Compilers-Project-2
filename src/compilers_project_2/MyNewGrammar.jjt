@@ -219,7 +219,10 @@ SKIP : /* COMMENTS */
 	System.out.print( "\n\nPrinting trie...\n\n " );
   	trie.display();
 }{  Program()  {    return jjtThis;  }}void Program() :{}{  Decl()
-  | Decl() Program()}void Decl() :{}{  VariableDecl() | FunctionDecl() | ClassDecl() | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int >
+  | Decl() Program()}void Decl() :{}{  VariableDecl()
+  | FunctionDecl()
+  | ClassDecl()
+  | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int >
 | < _double >
 | < _boolean >
 | < _string >
@@ -388,46 +391,69 @@ void ExprList() :
 void Expr() :
 {}
 {
-	LValue() < _assignop > Expr()
-| Constant()
-| LValue()
-| Call()
-| < _leftparen > Expr() < _rightparen >
-/*| Expr() < _plus > Expr()
-| Expr() < _minus > Expr()
-| Expr() < _multiplication > Expr()
-| Expr() < _division > Expr()
-| Expr() < _mod > Expr()
-| < _minus > Expr()
-| Expr() < _less > Expr()
-| Expr() < _less > Expr()
-| Expr() < _lessequal > Expr()
-| Expr() < _greater > Expr()
-| Expr() < _greaterequal > Expr()
-| Expr() < _equal > Expr()
-| Expr() < _notequal > Expr()
-| Expr() < _and > Expr()
-| Expr() < _or > Expr()
-| Expr() < _not > Expr() */  //left recursion
-| < _readln > < _leftparen > < _rightparen >
-| < _new > < _leftparen > < _id > < _rightparen >
-| < _newarray > < _leftparen > < _intconstant > < _comma > Type() < _rightparen >
+  Constant() ExprPrime()
+|
+  LOOKAHEAD( < _id > ( ( < _leftparen > ) | ( < _period > < _id > < _leftparen > ) ) )
+  Call() ExprPrime()
+| 
+  LValue() ( ( < _assignop > Expr() ) | {} ) ExprPrime()
+| 
+  < _leftparen > Expr() < _rightparen >
+|
+  < _minus > Expr()
+|
+  < _readln > < _leftparen > < _rightparen > ExprPrime()
+|
+  < _new > < _leftparen > < _id > < _rightparen > ExprPrime()
+|
+  < _newarray > < _leftparen > < _intconstant > < _comma > Type() < _rightparen > ExprPrime()
+}
+
+void ExprPrime() :
+{}
+{
+  < _plus > Expr()
+|
+  < _minus > Expr()
+|
+  < _multiplication > Expr()
+|
+  < _division > Expr()
+|
+  < _mod > Expr()
+|
+  < _less > Expr()
+|
+  < _lessequal > Expr()
+|
+  < _greater > Expr()
+|
+  < _greaterequal > Expr()
+|
+  < _equal > Expr()
+|
+  < _notequal > Expr()
+|
+  < _and > Expr()
+|
+  < _or > Expr()
+|
+  < _not > Expr()
 }
 
 void LValue() :
 {}
 {
-  < _id >
-  // left recursion
-//| LValue() < _leftbracket > Expr() < _rightbracket >
-//| LValue() < _period > < _id >
+  < _id > ( ( < _leftbracket > Expr() < _rightbracket > ) | ( < _period > < _id > ) )*
 }
 
 void Call() :
 {}
 {
+  LOOKAHEAD( < _id > < _leftparen > )
   < _id > < _leftparen > Actuals() < _rightparen >
-| < _id > < _period > < _id > < _leftparen > Actuals() < _rightparen >
+|
+  < _id > < _period > < _id > < _leftparen > Actuals() < _rightparen >
 }
 
 void Actuals() :
