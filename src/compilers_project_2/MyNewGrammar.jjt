@@ -1,0 +1,448 @@
+/**
+ * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
+ */options
+{
+  static = false;
+}
+
+PARSER_BEGIN( MyNewGrammar )
+package compilers_project_2;
+
+import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+
+public class MyNewGrammar
+{
+ 
+  // trie
+  public Trie trie;
+  
+  static String tokenName[] = new String[1000];
+  
+  public static void main( String args [] ) throws ParseException
+  {
+tokenName[0] = "EOF"; tokenName[4] = "EOL";
+	tokenName[5] = "_plus"; tokenName[6] = "_minus"; tokenName[7] = "_multiplication";
+	tokenName[8] = "_division"; tokenName[9] = "_mod"; tokenName[10] = "_assignop";
+	tokenName[11] = "_semicolon"; tokenName[12] = "_comma"; tokenName[13] = "_period";
+	tokenName[14] = "_leftparen"; tokenName[15] = "_rightparen"; tokenName[16] = "_leftbracket";
+	tokenName[17] = "_rightbracket"; tokenName[18] = "_leftbrace"; tokenName[19] = "_rightbrace";
+	tokenName[20] = "_less"; tokenName[21] = "_lessequal"; tokenName[22] = "_greater";
+	tokenName[23] = "_greaterequal"; tokenName[24] = "_equal"; tokenName[25] = "_notequal";
+	tokenName[26] = "_and"; tokenName[27] = "_or"; tokenName[28] = "_not";
+	tokenName[29] = "_boolean"; tokenName[30] = "_break"; tokenName[31] = "_class";
+	tokenName[32] = "_double"; tokenName[33] = "_else"; tokenName[34] = "_extends";
+	tokenName[35] = "_for"; tokenName[36] = "_if"; tokenName[37] = "_implements";
+	tokenName[38] = "_int"; tokenName[39] = "_interface"; tokenName[40] = "_new";
+	tokenName[41] = "_newarray"; tokenName[42] = "_null"; tokenName[43] = "_println";
+	tokenName[44] = "_readln"; tokenName[45] = "_return"; tokenName[46] = "_string";
+	tokenName[47] = "_void"; tokenName[48] = "_while"; tokenName[49] = "_booleanconstant";
+	tokenName[50] = "_id"; tokenName[51] = "_intconstant"; tokenName[52] = "_doubleconstant";
+	tokenName[53] = "_stringconstant"; tokenName[54] = "DIGIT"; tokenName[55] = "LETTER";
+	tokenName[56] = "ALPHABET";
+
+    MyNewGrammar parser = null;
+    
+    if ( args.length > 0 )
+    {
+  		try
+  		{ 
+      		// We have a file to parse
+      		System.out.println( "file specified! Reading from file...\n" );
+      		parser = new MyNewGrammar( new FileInputStream( args[0] ) );
+  		}
+  		catch ( FileNotFoundException e )
+  		{
+		    // Specified file doesn't exist so don't go any further
+		    System.out.println( "file not found! Terminating..." );
+		    return;
+  		}
+	}
+	else
+	{
+  		// Default to console input
+	  	System.out.println( "No file specified! Reading from standard input...\n" );
+	  	parser = new MyNewGrammar( System.in );
+	}
+    
+	try
+	{
+	    parser.trie = new Trie();
+	    parser.Start();
+  	}
+	catch ( Exception e )
+  	{
+	    System.out.println( "NOK." );
+	    System.out.println( e.getMessage() );
+	    parser.ReInit( System.in );
+ 	}
+  	catch ( Error e )
+  	{
+   		System.out.println( "Oops." );
+    	System.out.println( e.getMessage() );
+  	}
+  }
+}PARSER_END(MyNewGrammar)SKIP :
+{
+  " "
+| "\t"
+| "\r"
+}
+
+TOKEN : /* END OF LINE */
+{
+  < EOL : "\n" >
+}
+
+TOKEN : /* OPERATORS */
+{
+  < _plus : "+" >
+| < _minus : "-" >
+| < _multiplication : "*" >
+| < _division : "/" >
+| < _mod : "%" >
+| < _assignop : "=" >
+| < _semicolon : ";" >
+| < _comma : "," >
+| < _period : "." >
+| < _leftparen : "(" >
+| < _rightparen : ")" >
+| < _leftbracket : "[" >
+| < _rightbracket : "]" >
+| < _leftbrace : "{" >
+| < _rightbrace : "}" >
+}
+
+TOKEN : /* LOGICAL */
+{
+  < _less : "<" >
+| < _lessequal : "<=" >
+| < _greater : ">" >
+| < _greaterequal : ">=" >
+| < _equal : "==" >
+| < _notequal : "!=" >
+| < _and : "&&" >
+| < _or : "||" >
+| < _not : "!" >
+}
+
+TOKEN : /* RESERVED */
+{
+  < _boolean : "boolean" >
+| < _break : "break" >
+| < _class : "class" >
+| < _double : "double" >
+| < _else : "else" >
+| < _extends : "extends" >
+| < _for : "for" >
+| < _if : "if" >
+| < _implements : "implements" >
+| < _int : "int" >
+| < _interface : "interface" >
+| < _new : "new" >
+| < _newarray : "newarray" >
+| < _null : "null" >
+| < _println : "println" >
+| < _readln : "readln" >
+| < _return : "return" >
+| < _string : "string" >
+| < _void : "void" >
+| < _while : "while" >
+}
+
+TOKEN : /* BOOLEAN CONSTANT */
+{
+  < _booleanconstant : "true" | "false" >
+}
+
+TOKEN : /* IDENTIFIER */
+{
+  < _id : < LETTER >(< LETTER >|< DIGIT >|"_")* >
+}
+
+TOKEN : /* STATIC TOKENS */
+{
+  < _intconstant : (< DIGIT >)+ | ("0x" | "0X") (< DIGIT > |
+  	"a" | "A" | "b" | "B" | "c" | "C" | "d" | "D" |
+  	"e" | "E" | "f" | "F" )+ | (< DIGIT >)+ ( "E" | "e" ) "+" (< DIGIT >)+>
+|   < _doubleconstant : (< DIGIT >)+ "." (< DIGIT >)* |
+  	(< DIGIT >)+ "." (< DIGIT >)* ("E" | "e") ("+" | "-")? (< DIGIT >)+>
+| < _stringconstant : "\"" ( ~["\r", "\n", "\""] )* "\"" >
+| < #DIGIT : ["0"-"9"] >
+| < #LETTER : ["a"-"z", "A"-"Z"] >
+| < #ALPHABET : [" " - "~"] >
+}
+
+SKIP : /* COMMENTS */
+{
+  < LINECOMMENT : "//" ( ~["\r", "\n"] )* > // Line comments should skip the entire line
+| < ML_COMMENT_START : "/*" > : IN_ML_COMMENT
+}
+
+< IN_ML_COMMENT > SKIP :
+{
+  < ML_COMMENT_END : "*/" > : DEFAULT
+| < ~[] >
+}SimpleNode Start() :{
+	while ( jj_ntk == -1 )
+  	{
+ 		// Get the next token
+ 		Token token = getNextToken();
+ 		//System.out.print( token.toString() + " " );
+
+	 	if ( tokenName[token.kind].equals( "EOF" ) )
+	 	{
+		   	// End of File. Terminate
+		   	break;
+	 	}	
+	 	else if ( tokenName[token.kind].equals( "EOL" ) )
+	 	{
+		   	// New line 
+		   	System.out.print( "\n" );
+	 	}
+	 	else
+	 	{
+	 	  	// Print the type of token we're parsing
+		 	System.out.print( tokenName[token.kind] + " " );
+
+			// Is this an identifier?
+		 	if ( tokenName[token.kind].equals( "_id" ) )
+		 	{
+		 	  	// Add if to the symbol table
+			 	trie.addIdentifier( token.toString() );
+		 	}
+	 	}
+		 
+	}
+
+	// Print the symbol table
+	System.out.print( "\n\nPrinting trie...\n\n " );
+  	trie.display();
+}{  Program()  {    return jjtThis;  }}void Program() :{}{  Decl()
+  | Decl() Program()}void Decl() :{}{  VariableDecl() | FunctionDecl() | ClassDecl() | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int >
+| < _double >
+| < _boolean >
+| < _string >
+//| Type() < _leftbracket > < _rightbracket >   left recursion
+| < _id >}void FunctionDecl() :{}{  Type() < _id > <_leftparen > Formals() <_rightparen > StmtBlock()
+| < _void > < _id > < _leftparen > Formals() < _rightparen > StmtBlock()}
+
+void Formals() :
+{}
+{
+  VariableList()
+| "" // for empty
+}
+
+void VariableList() :
+{}
+{
+  Variable() < _comma > VariableList()
+| Variable()
+}
+
+void ClassDecl() :
+{}
+{
+  < _class > < _id > < _leftbrace > < _rightbrace >
+| < _class > < _id > < _leftbrace > FieldList() < _rightbrace >
+| < _class > < _id > ClassOptions() < _leftbrace > < _rightbrace >
+| < _class > < _id > ClassOptions() < _leftbrace > FieldList() < _rightbrace >
+}
+
+void FieldList() :
+{}
+{
+  Field()
+| Field() FieldList()
+}
+
+void ClassOptions() :
+{}
+{
+  < _extends > < _id >
+| < _extends > < _id > ImplementsList()
+| ImplementsList()
+}
+
+void ImplementsList() :
+{}
+{
+  < _implements > < _id >
+| < _implements > < _id > < _comma > ImplementsList()
+}
+
+void Field() :
+{}
+{
+  VariableDecl()
+| FunctionDecl()
+}
+
+void InterfaceDecl() :
+{}
+{
+  < _interface > < _id > < _leftbrace > < _rightbrace >
+| < _interface > < _id > < _leftbrace > PrototypeList() < _rightbrace >
+}
+
+void PrototypeList() :
+{}
+{
+  Prototype()
+| Prototype() PrototypeList()
+}
+
+void Prototype() :
+{}
+{
+  Type() < _id > < _leftparen > Formals() < _rightparen > < _semicolon >
+| < _void > < _id > < _leftparen > Formals() < _rightparen > < _semicolon >
+}
+
+void StmtBlock() :
+{}
+{
+  < _leftbrace > < _rightbrace >
+| < _leftbrace > VariableDeclList() < _rightbrace >
+| < _leftbrace > StmtList() < _rightbrace >
+| < _leftbrace > VariableDeclList() StmtList() < _rightbrace >
+}
+
+void VariableDeclList() :
+{}
+{
+  VariableDecl()
+| VariableDecl() VariableDeclList()
+}
+
+void StmtList() :
+{}
+{
+  Stmt()
+| Stmt() StmtList()
+}
+
+void Stmt() :
+{}
+{
+  < _semicolon >
+| Expr() < _semicolon >
+| IfStmt()
+| WhileStmt()
+| ForStmt()
+| BreakStmt()
+| ReturnStmt()
+| PrintStmt()
+| StmtBlock()
+}
+
+void IfStmt() :
+{}
+{
+  < _if > < _leftparen > Expr() < _rightparen > Stmt()
+| < _if > < _leftparen > Expr() < _rightparen > Stmt() < _else > Stmt()
+}
+
+void WhileStmt() :
+{}
+{
+  < _while > < _leftparen > Expr() < _rightparen > Stmt()
+}
+
+void ForStmt() :
+{}
+{
+  < _for > < _leftparen > < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()
+| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()
+| < _for > < _leftparen > < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
+| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
+}
+
+void BreakStmt() :
+{}
+{
+  < _break > < _semicolon >
+}
+
+void ReturnStmt() :
+{}
+{
+  < _return > < _semicolon >
+| < _return > Expr() < _semicolon >
+}
+
+void PrintStmt() :
+{}
+{
+  < _println > < _leftparen > ExprList() < _rightparen > < _semicolon >
+}
+
+void ExprList() :
+{}
+{
+  Expr()
+| Expr() < _comma > ExprList()
+}
+
+void Expr() :
+{}
+{
+	LValue() < _assignop > Expr()
+| Constant()
+| LValue()
+| Call()
+| < _leftparen > Expr() < _rightparen >
+/*| Expr() < _plus > Expr()
+| Expr() < _minus > Expr()
+| Expr() < _multiplication > Expr()
+| Expr() < _division > Expr()
+| Expr() < _mod > Expr()
+| < _minus > Expr()
+| Expr() < _less > Expr()
+| Expr() < _less > Expr()
+| Expr() < _lessequal > Expr()
+| Expr() < _greater > Expr()
+| Expr() < _greaterequal > Expr()
+| Expr() < _equal > Expr()
+| Expr() < _notequal > Expr()
+| Expr() < _and > Expr()
+| Expr() < _or > Expr()
+| Expr() < _not > Expr() */  //left recursion
+| < _readln > < _leftparen > < _rightparen >
+| < _new > < _leftparen > < _id > < _rightparen >
+| < _newarray > < _leftparen > < _intconstant > < _comma > Type() < _rightparen >
+}
+
+void LValue() :
+{}
+{
+  < _id >
+  // left recursion
+//| LValue() < _leftbracket > Expr() < _rightbracket >
+//| LValue() < _period > < _id >
+}
+
+void Call() :
+{}
+{
+  < _id > < _leftparen > Actuals() < _rightparen >
+| < _id > < _period > < _id > < _leftparen > Actuals() < _rightparen >
+}
+
+void Actuals() :
+{}
+{
+  ExprList()
+| "" // for empty
+}
+
+void Constant() :
+{}
+{
+  < _intconstant >
+| < _doubleconstant >
+| < _stringconstant >
+| < _booleanconstant >
+| < _null >
+}
