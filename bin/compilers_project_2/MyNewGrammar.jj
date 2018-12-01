@@ -263,7 +263,8 @@ SKIP : /* COMMENTS */
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}{/*@bgen(jjtree) Program */
   try {
-/*@egen*/  Decl()/*@bgen(jjtree)*/
+/*@egen*/
+  Decl() [ Program() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -283,15 +284,15 @@ SKIP : /* COMMENTS */
       jjtree.closeNodeScope(jjtn000, true);
     }
   }
-/*@egen*/
-  //| Decl() Program()}void Decl() :{/*@bgen(jjtree) Decl */
+/*@egen*/}void Decl() :{/*@bgen(jjtree) Decl */
   SimpleNode jjtn000 = new SimpleNode(JJTDECL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}{/*@bgen(jjtree) Decl */
   try {
-/*@egen*/  VariableDecl()
-  //| FunctionDecl()
+/*@egen*/
+  LOOKAHEAD(3) VariableDecl()
+  | FunctionDecl()
   | ClassDecl()
   | InterfaceDecl()/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
@@ -421,7 +422,7 @@ void Formals() :
 {/*@bgen(jjtree) Formals */
   try {
 /*@egen*/
-  [VariableList()]/*@bgen(jjtree)*/
+  [ VariableList() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -453,7 +454,7 @@ void VariableList() :
 {/*@bgen(jjtree) VariableList */
   try {
 /*@egen*/
-  Variable() [< _comma > VariableList()]/*@bgen(jjtree)*/
+  Variable() [ < _comma > VariableList() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -535,7 +536,7 @@ void FieldList() :
 {/*@bgen(jjtree) FieldList */
   try {
 /*@egen*/
-  Field()/*@bgen(jjtree)*/
+  Field() [ FieldList() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -556,7 +557,6 @@ void FieldList() :
     }
   }
 /*@egen*/
-//| Field() FieldList()
 }
 
 void Field() :
@@ -568,7 +568,8 @@ void Field() :
 {/*@bgen(jjtree) Field */
   try {
 /*@egen*/
-  VariableDecl()/*@bgen(jjtree)*/
+  LOOKAHEAD(3) VariableDecl()
+| FunctionDecl()/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -589,7 +590,6 @@ void Field() :
     }
   }
 /*@egen*/
-//| FunctionDecl()
 }
 
 void InterfaceDecl() :
@@ -601,7 +601,7 @@ void InterfaceDecl() :
 {/*@bgen(jjtree) InterfaceDecl */
   try {
 /*@egen*/
-  < _interface > < _id > < _leftbrace > [PrototypeList()] < _rightbrace >/*@bgen(jjtree)*/
+  < _interface > < _id > < _leftbrace > [ PrototypeList() ] < _rightbrace >/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -633,7 +633,7 @@ void PrototypeList() :
 {/*@bgen(jjtree) PrototypeList */
   try {
 /*@egen*/
-  Prototype() [PrototypeList()]/*@bgen(jjtree)*/
+  Prototype() [ PrototypeList() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -824,7 +824,7 @@ void IfStmt() :
 {/*@bgen(jjtree) IfStmt */
   try {
 /*@egen*/
-  < _if > < _leftparen > Expr() < _rightparen > Stmt()/*@bgen(jjtree)*/
+  < _if > < _leftparen > Expr() < _rightparen > Stmt() [ < _else > Stmt() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -845,7 +845,6 @@ void IfStmt() :
     }
   }
 /*@egen*/
-//| < _if > < _leftparen > Expr() < _rightparen > Stmt() < _else > Stmt()
 }
 
 void WhileStmt() :
@@ -889,7 +888,7 @@ void ForStmt() :
 {/*@bgen(jjtree) ForStmt */
   try {
 /*@egen*/
-  < _for > < _leftparen > < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()/*@bgen(jjtree)*/
+  < _for > < _leftparen > [ Expr() ] < _semicolon > Expr() < _semicolon > [ Expr() ] < _rightparen > Stmt()/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -910,9 +909,6 @@ void ForStmt() :
     }
   }
 /*@egen*/
-//| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()
-//| < _for > < _leftparen > < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
-//| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
 }
 
 void BreakStmt() :
@@ -993,7 +989,7 @@ void ExprList() :
 {/*@bgen(jjtree) ExprList */
   try {
 /*@egen*/
-  Expr()/*@bgen(jjtree)*/
+  Expr() [ < _comma > ExprList() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1014,7 +1010,6 @@ void ExprList() :
     }
   }
 /*@egen*/
-//| Expr() < _comma > ExprList()
 }
 
 void Expr() :
@@ -1026,16 +1021,15 @@ void Expr() :
 {/*@bgen(jjtree) Expr */
   try {
 /*@egen*/
+  LValue() [ < _assignop > Expr() ] ExprPrime()
+|
   Constant() ExprPrime()
 |
-  LOOKAHEAD( < _id > ( ( < _leftparen > ) | ( < _period > < _id > < _leftparen > ) ) )
   Call() ExprPrime()
-| 
-  LValue() ( ( < _assignop > Expr() ) | {} ) ExprPrime()
-| 
-  < _leftparen > Expr() < _rightparen >
 |
-  < _minus > Expr()
+  < _leftparen > Expr() < _rightparen > ExprPrime()
+|
+  < _minus > Expr() ExprPrime()
 |
   < _readln > < _leftparen > < _rightparen > ExprPrime()
 |
@@ -1163,10 +1157,7 @@ void Call() :
 {/*@bgen(jjtree) Call */
   try {
 /*@egen*/
-  LOOKAHEAD( < _id > < _leftparen > )
-  < _id > < _leftparen > Actuals() < _rightparen >
-|
-  < _id > < _period > < _id > < _leftparen > Actuals() < _rightparen >/*@bgen(jjtree)*/
+  < _id > [ < _period > < _id > ] < _leftparen > Actuals() < _rightparen >/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1198,7 +1189,7 @@ void Actuals() :
 {/*@bgen(jjtree) Actuals */
   try {
 /*@egen*/
-  ExprList()/*@bgen(jjtree)*/
+  [ ExprList() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1219,7 +1210,6 @@ void Actuals() :
     }
   }
 /*@egen*/
-//| "" // for empty
 }
 
 void Constant() :

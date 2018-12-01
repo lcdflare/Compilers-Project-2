@@ -222,9 +222,10 @@ SKIP : /* COMMENTS */
 	System.out.print( "\n\nPrinting trie...\n\n " );
   	trie.display();
   	*/
-}{  Program()  {    return jjtThis;  }}void Program() :{}{  Decl()
-  //| Decl() Program()}void Decl() :{}{  VariableDecl()
-  //| FunctionDecl()
+}{  Program()  {    return jjtThis;  }}void Program() :{}{
+  Decl() [ Program() ]}void Decl() :{}{
+  LOOKAHEAD(3) VariableDecl()
+  | FunctionDecl()
   | ClassDecl()
   | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int > (< _leftbracket > < _rightbracket >)* 
 | < _double > (< _leftbracket > < _rightbracket >)* 
@@ -238,13 +239,13 @@ SKIP : /* COMMENTS */
 void Formals() :
 {}
 {
-  [VariableList()]
+  [ VariableList() ]
 }
 
 void VariableList() :
 {}
 {
-  Variable() [< _comma > VariableList()]
+  Variable() [ < _comma > VariableList() ]
 }
 
 void ClassDecl() :
@@ -262,27 +263,26 @@ void ImplementsList() :
 void FieldList() :
 {}
 {
-  Field()
-//| Field() FieldList()
+  Field() [ FieldList() ]
 }
 
 void Field() :
 {}
 {
-  VariableDecl()
-//| FunctionDecl()
+  LOOKAHEAD(3) VariableDecl()
+| FunctionDecl()
 }
 
 void InterfaceDecl() :
 {}
 {
-  < _interface > < _id > < _leftbrace > [PrototypeList()] < _rightbrace >
+  < _interface > < _id > < _leftbrace > [ PrototypeList() ] < _rightbrace >
 }
 
 void PrototypeList() :
 {}
 {
-  Prototype() [PrototypeList()]
+  Prototype() [ PrototypeList() ]
 }
 
 void Prototype() :
@@ -331,8 +331,7 @@ void Stmt() :
 void IfStmt() :
 {}
 {
-  < _if > < _leftparen > Expr() < _rightparen > Stmt()
-//| < _if > < _leftparen > Expr() < _rightparen > Stmt() < _else > Stmt()
+  < _if > < _leftparen > Expr() < _rightparen > Stmt() [ < _else > Stmt() ]
 }
 
 void WhileStmt() :
@@ -344,10 +343,7 @@ void WhileStmt() :
 void ForStmt() :
 {}
 {
-  < _for > < _leftparen > < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()
-//| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()
-//| < _for > < _leftparen > < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
-//| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
+  < _for > < _leftparen > [ Expr() ] < _semicolon > Expr() < _semicolon > [ Expr() ] < _rightparen > Stmt()
 }
 
 void BreakStmt() :
@@ -372,23 +368,21 @@ void PrintStmt() :
 void ExprList() :
 {}
 {
-  Expr()
-//| Expr() < _comma > ExprList()
+  Expr() [ < _comma > ExprList() ]
 }
 
 void Expr() :
 {}
 {
+  LValue() [ < _assignop > Expr() ] ExprPrime()
+|
   Constant() ExprPrime()
 |
-  LOOKAHEAD( < _id > ( ( < _leftparen > ) | ( < _period > < _id > < _leftparen > ) ) )
   Call() ExprPrime()
-| 
-  LValue() ( ( < _assignop > Expr() ) | {} ) ExprPrime()
-| 
-  < _leftparen > Expr() < _rightparen >
 |
-  < _minus > Expr()
+  < _leftparen > Expr() < _rightparen > ExprPrime()
+|
+  < _minus > Expr() ExprPrime()
 |
   < _readln > < _leftparen > < _rightparen > ExprPrime()
 |
@@ -438,17 +432,13 @@ void LValue() :
 void Call() :
 {}
 {
-  LOOKAHEAD( < _id > < _leftparen > )
-  < _id > < _leftparen > Actuals() < _rightparen >
-|
-  < _id > < _period > < _id > < _leftparen > Actuals() < _rightparen >
+  < _id > [ < _period > < _id > ] < _leftparen > Actuals() < _rightparen >
 }
 
 void Actuals() :
 {}
 {
-  ExprList()
-//| "" // for empty
+  [ ExprList() ]
 }
 
 void Constant() :
