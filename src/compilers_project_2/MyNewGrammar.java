@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileInputStream;
 
 public class MyNewGrammar/*@bgen(jjtree)*/implements MyNewGrammarTreeConstants, MyNewGrammarConstants {/*@bgen(jjtree)*/
-  protected JJTMyNewGrammarState jjtree = new JJTMyNewGrammarState();
+  protected static JJTMyNewGrammarState jjtree = new JJTMyNewGrammarState();
   // trie
   public Trie trie;
 
@@ -59,8 +59,10 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
 
         try
         {
+                SimpleNode n = MyNewGrammar.Start();
+        n.dump("");
             parser.trie = new Trie();
-            parser.Start();
+
         }
         catch ( Exception e )
         {
@@ -75,44 +77,11 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
         }
   }
 
-  final public SimpleNode Start() throws ParseException {
+  static final public SimpleNode Start() throws ParseException {
  /*@bgen(jjtree) Start */
-        SimpleNode jjtn000 = new SimpleNode(JJTSTART);
-        boolean jjtc000 = true;
-        jjtree.openNodeScope(jjtn000);while ( jj_ntk == -1 )
-        {
-                // Get the next token
-                Token token = getNextToken();
-                //System.out.print( token.toString() + " " );
-
-                if ( tokenName[token.kind].equals( "EOF" ) )
-                {
-                        // End of File. Terminate
-                        break;
-                }
-                else if ( tokenName[token.kind].equals( "EOL" ) )
-                {
-                        // New line 
-                        System.out.print( "\u005cn" );
-                }
-                else
-                {
-                        // Print the type of token we're parsing
-                        System.out.print( tokenName[token.kind] + " " );
-
-                        // Is this an identifier?
-                        if ( tokenName[token.kind].equals( "_id" ) )
-                        {
-                                // Add if to the symbol table
-                                trie.addIdentifier( token.toString() );
-                        }
-                }
-
-        }
-
-        // Print the symbol table
-        System.out.print( "\u005cn\u005cnPrinting trie...\u005cn\u005cn " );
-        trie.display();
+  SimpleNode jjtn000 = new SimpleNode(JJTSTART);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
     try {
       Program();
     jjtree.closeNodeScope(jjtn000, true);
@@ -140,25 +109,53 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     throw new Error("Missing return statement in function");
   }
 
-  final public void Program() throws ParseException {
+  static final public void Program() throws ParseException {
  /*@bgen(jjtree) Program */
   SimpleNode jjtn000 = new SimpleNode(JJTPROGRAM);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
+      Decl();
+    } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      {if (true) throw (RuntimeException)jjte000;}
+    }
+    if (jjte000 instanceof ParseException) {
+      {if (true) throw (ParseException)jjte000;}
+    }
+    {if (true) throw (Error)jjte000;}
+    } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+    }
+  }
+
+  static final public void Decl() throws ParseException {
+ /*@bgen(jjtree) Decl */
+  SimpleNode jjtn000 = new SimpleNode(JJTDECL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case _boolean:
-      case _class:
       case _double:
       case _int:
-      case _interface:
       case _string:
-      case _void:
       case _id:
-        Decl();
+        VariableDecl();
         break;
-        Decl();
-        Program();
+      case _class:
+        ClassDecl();
+        break;
+      case _interface:
+        InterfaceDecl();
         break;
       default:
         jj_la1[0] = jj_gen;
@@ -186,56 +183,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Decl() throws ParseException {
- /*@bgen(jjtree) Decl */
-  SimpleNode jjtn000 = new SimpleNode(JJTDECL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _boolean:
-      case _double:
-      case _int:
-      case _string:
-      case _id:
-        VariableDecl();
-        break;
-      case _void:
-        FunctionDecl();
-        break;
-      case _class:
-        ClassDecl();
-        break;
-      case _interface:
-        InterfaceDecl();
-        break;
-      default:
-        jj_la1[1] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-  }
-
-  final public void VariableDecl() throws ParseException {
+  static final public void VariableDecl() throws ParseException {
  /*@bgen(jjtree) VariableDecl */
   SimpleNode jjtn000 = new SimpleNode(JJTVARIABLEDECL);
   boolean jjtc000 = true;
@@ -264,7 +212,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Variable() throws ParseException {
+  static final public void Variable() throws ParseException {
  /*@bgen(jjtree) Variable */
   SimpleNode jjtn000 = new SimpleNode(JJTVARIABLE);
   boolean jjtc000 = true;
@@ -293,7 +241,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Type() throws ParseException {
+  static final public void Type() throws ParseException {
  /*@bgen(jjtree) Type */
   SimpleNode jjtn000 = new SimpleNode(JJTTYPE);
   boolean jjtc000 = true;
@@ -302,24 +250,53 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case _int:
         jj_consume_token(_int);
+        TypePrime();
         break;
       case _double:
         jj_consume_token(_double);
+        TypePrime();
         break;
       case _boolean:
         jj_consume_token(_boolean);
+        TypePrime();
         break;
       case _string:
         jj_consume_token(_string);
+        TypePrime();
         break;
       case _id:
         jj_consume_token(_id);
+        TypePrime();
+        break;
+        jj_consume_token(_int);
+        break;
+        jj_consume_token(_double);
+        break;
+        jj_consume_token(_boolean);
+        break;
+        jj_consume_token(_string);
+        break;
+        jj_consume_token(_id);
         break;
       default:
-        jj_la1[2] = jj_gen;
+        jj_la1[1] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
+    } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      {if (true) throw (RuntimeException)jjte000;}
+    }
+    if (jjte000 instanceof ParseException) {
+      {if (true) throw (ParseException)jjte000;}
+    }
+    {if (true) throw (Error)jjte000;}
     } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
@@ -327,7 +304,48 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void FunctionDecl() throws ParseException {
+  static final public void TypePrime() throws ParseException {
+ /*@bgen(jjtree) TypePrime */
+  SimpleNode jjtn000 = new SimpleNode(JJTTYPEPRIME);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case _leftbracket:
+        jj_consume_token(_leftbracket);
+        jj_consume_token(_rightbracket);
+        TypePrime();
+        break;
+        jj_consume_token(_leftbracket);
+        jj_consume_token(_rightbracket);
+        break;
+      default:
+        jj_la1[2] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+    } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            {if (true) throw (RuntimeException)jjte000;}
+          }
+          if (jjte000 instanceof ParseException) {
+            {if (true) throw (ParseException)jjte000;}
+          }
+          {if (true) throw (Error)jjte000;}
+    } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+    }
+  }
+
+  static final public void FunctionDecl() throws ParseException {
  /*@bgen(jjtree) FunctionDecl */
   SimpleNode jjtn000 = new SimpleNode(JJTFUNCTIONDECL);
   boolean jjtc000 = true;
@@ -380,28 +398,13 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Formals() throws ParseException {
+  static final public void Formals() throws ParseException {
  /*@bgen(jjtree) Formals */
   SimpleNode jjtn000 = new SimpleNode(JJTFORMALS);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _boolean:
-      case _double:
-      case _int:
-      case _string:
-      case _id:
-        VariableList();
-        break;
-      case 61:
-        jj_consume_token(61);
-        break;
-      default:
-        jj_la1[4] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      VariableList();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -423,23 +426,103 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void VariableList() throws ParseException {
+  static final public void VariableList() throws ParseException {
  /*@bgen(jjtree) VariableList */
   SimpleNode jjtn000 = new SimpleNode(JJTVARIABLELIST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
+      Variable();
+      jj_consume_token(_comma);
+      VariableList();
+    } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      {if (true) throw (RuntimeException)jjte000;}
+    }
+    if (jjte000 instanceof ParseException) {
+      {if (true) throw (ParseException)jjte000;}
+    }
+    {if (true) throw (Error)jjte000;}
+    } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+    }
+  }
+
+  static final public void ClassDecl() throws ParseException {
+ /*@bgen(jjtree) ClassDecl */
+  SimpleNode jjtn000 = new SimpleNode(JJTCLASSDECL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(_class);
+      jj_consume_token(_id);
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _boolean:
-      case _double:
-      case _int:
-      case _string:
-      case _id:
-        Variable();
-        jj_consume_token(_comma);
-        VariableList();
+      case _extends:
+        jj_consume_token(_extends);
+        jj_consume_token(_id);
         break;
-        Variable();
+      default:
+        jj_la1[4] = jj_gen;
+        ;
+      }
+      jj_consume_token(_leftbrace);
+      jj_consume_token(_rightbrace);
+    } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+    }
+  }
+
+  static final public void FieldList() throws ParseException {
+ /*@bgen(jjtree) FieldList */
+  SimpleNode jjtn000 = new SimpleNode(JJTFIELDLIST);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      Field();
+    } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      {if (true) throw (RuntimeException)jjte000;}
+    }
+    if (jjte000 instanceof ParseException) {
+      {if (true) throw (ParseException)jjte000;}
+    }
+    {if (true) throw (Error)jjte000;}
+    } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+    }
+  }
+
+  static final public void ClassOptions() throws ParseException {
+ /*@bgen(jjtree) ClassOptions */
+  SimpleNode jjtn000 = new SimpleNode(JJTCLASSOPTIONS);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case _extends:
+        jj_consume_token(_extends);
+        jj_consume_token(_id);
+        break;
+      case _implements:
+        ImplementsList();
         break;
       default:
         jj_la1[5] = jj_gen;
@@ -467,187 +550,14 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void ClassDecl() throws ParseException {
- /*@bgen(jjtree) ClassDecl */
-  SimpleNode jjtn000 = new SimpleNode(JJTCLASSDECL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _class:
-        jj_consume_token(_class);
-        jj_consume_token(_id);
-        jj_consume_token(_leftbrace);
-        jj_consume_token(_rightbrace);
-        break;
-        jj_consume_token(_class);
-        jj_consume_token(_id);
-        jj_consume_token(_leftbrace);
-        FieldList();
-        jj_consume_token(_rightbrace);
-        break;
-        jj_consume_token(_class);
-        jj_consume_token(_id);
-        ClassOptions();
-        jj_consume_token(_leftbrace);
-        jj_consume_token(_rightbrace);
-        break;
-        jj_consume_token(_class);
-        jj_consume_token(_id);
-        ClassOptions();
-        jj_consume_token(_leftbrace);
-        FieldList();
-        jj_consume_token(_rightbrace);
-        break;
-      default:
-        jj_la1[6] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-  }
-
-  final public void FieldList() throws ParseException {
- /*@bgen(jjtree) FieldList */
-  SimpleNode jjtn000 = new SimpleNode(JJTFIELDLIST);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _boolean:
-      case _double:
-      case _int:
-      case _string:
-      case _void:
-      case _id:
-        Field();
-        break;
-        Field();
-        FieldList();
-        break;
-      default:
-        jj_la1[7] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-  }
-
-  final public void ClassOptions() throws ParseException {
- /*@bgen(jjtree) ClassOptions */
-  SimpleNode jjtn000 = new SimpleNode(JJTCLASSOPTIONS);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-    try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _extends:
-        jj_consume_token(_extends);
-        jj_consume_token(_id);
-        break;
-        jj_consume_token(_extends);
-        jj_consume_token(_id);
-        ImplementsList();
-        break;
-      case _implements:
-        ImplementsList();
-        break;
-      default:
-        jj_la1[8] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
-    } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-    }
-  }
-
-  final public void ImplementsList() throws ParseException {
+  static final public void ImplementsList() throws ParseException {
  /*@bgen(jjtree) ImplementsList */
   SimpleNode jjtn000 = new SimpleNode(JJTIMPLEMENTSLIST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _implements:
-        jj_consume_token(_implements);
-        jj_consume_token(_id);
-        break;
-        jj_consume_token(_implements);
-        jj_consume_token(_id);
-        jj_consume_token(_comma);
-        ImplementsList();
-        break;
-      default:
-        jj_la1[9] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
+      jj_consume_token(_implements);
+      jj_consume_token(_id);
     } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
@@ -655,28 +565,13 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Field() throws ParseException {
+  static final public void Field() throws ParseException {
  /*@bgen(jjtree) Field */
   SimpleNode jjtn000 = new SimpleNode(JJTFIELD);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _boolean:
-      case _double:
-      case _int:
-      case _string:
-      case _id:
-        VariableDecl();
-        break;
-      case _void:
-        FunctionDecl();
-        break;
-      default:
-        jj_la1[10] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      VariableDecl();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -698,44 +593,16 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void InterfaceDecl() throws ParseException {
+  static final public void InterfaceDecl() throws ParseException {
  /*@bgen(jjtree) InterfaceDecl */
   SimpleNode jjtn000 = new SimpleNode(JJTINTERFACEDECL);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _interface:
-        jj_consume_token(_interface);
-        jj_consume_token(_id);
-        jj_consume_token(_leftbrace);
-        jj_consume_token(_rightbrace);
-        break;
-        jj_consume_token(_interface);
-        jj_consume_token(_id);
-        jj_consume_token(_leftbrace);
-        PrototypeList();
-        jj_consume_token(_rightbrace);
-        break;
-      default:
-        jj_la1[11] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
+      jj_consume_token(_interface);
+      jj_consume_token(_id);
+      jj_consume_token(_leftbrace);
+      jj_consume_token(_rightbrace);
     } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
@@ -743,29 +610,13 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void PrototypeList() throws ParseException {
+  static final public void PrototypeList() throws ParseException {
  /*@bgen(jjtree) PrototypeList */
   SimpleNode jjtn000 = new SimpleNode(JJTPROTOTYPELIST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _boolean:
-      case _double:
-      case _int:
-      case _string:
-      case _void:
-      case _id:
-        Prototype();
-        break;
-        Prototype();
-        PrototypeList();
-        break;
-      default:
-        jj_la1[12] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      Prototype();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -787,7 +638,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Prototype() throws ParseException {
+  static final public void Prototype() throws ParseException {
  /*@bgen(jjtree) Prototype */
   SimpleNode jjtn000 = new SimpleNode(JJTPROTOTYPE);
   boolean jjtc000 = true;
@@ -815,7 +666,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
         jj_consume_token(_semicolon);
         break;
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[6] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -840,49 +691,14 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void StmtBlock() throws ParseException {
+  static final public void StmtBlock() throws ParseException {
  /*@bgen(jjtree) StmtBlock */
   SimpleNode jjtn000 = new SimpleNode(JJTSTMTBLOCK);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _leftbrace:
-        jj_consume_token(_leftbrace);
-        jj_consume_token(_rightbrace);
-        break;
-        jj_consume_token(_leftbrace);
-        VariableDeclList();
-        jj_consume_token(_rightbrace);
-        break;
-        jj_consume_token(_leftbrace);
-        StmtList();
-        jj_consume_token(_rightbrace);
-        break;
-        jj_consume_token(_leftbrace);
-        VariableDeclList();
-        StmtList();
-        jj_consume_token(_rightbrace);
-        break;
-      default:
-        jj_la1[14] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
+      jj_consume_token(_leftbrace);
+      jj_consume_token(_rightbrace);
     } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
@@ -890,28 +706,13 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void VariableDeclList() throws ParseException {
+  static final public void VariableDeclList() throws ParseException {
  /*@bgen(jjtree) VariableDeclList */
   SimpleNode jjtn000 = new SimpleNode(JJTVARIABLEDECLLIST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _boolean:
-      case _double:
-      case _int:
-      case _string:
-      case _id:
-        VariableDecl();
-        break;
-        VariableDecl();
-        VariableDeclList();
-        break;
-      default:
-        jj_la1[15] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      VariableDecl();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -933,42 +734,13 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void StmtList() throws ParseException {
+  static final public void StmtList() throws ParseException {
  /*@bgen(jjtree) StmtList */
   SimpleNode jjtn000 = new SimpleNode(JJTSTMTLIST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _minus:
-      case _semicolon:
-      case _leftparen:
-      case _leftbrace:
-      case _break:
-      case _for:
-      case _if:
-      case _new:
-      case _newarray:
-      case _null:
-      case _println:
-      case _readln:
-      case _return:
-      case _while:
-      case _booleanconstant:
-      case _id:
-      case _intconstant:
-      case _doubleconstant:
-      case _stringconstant:
-        Stmt();
-        break;
-        Stmt();
-        StmtList();
-        break;
-      default:
-        jj_la1[16] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      Stmt();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -990,17 +762,15 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Stmt() throws ParseException {
+  static final public void Stmt() throws ParseException {
  /*@bgen(jjtree) Stmt */
   SimpleNode jjtn000 = new SimpleNode(JJTSTMT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _semicolon:
-        jj_consume_token(_semicolon);
-        break;
       case _minus:
+      case _semicolon:
       case _leftparen:
       case _new:
       case _newarray:
@@ -1011,7 +781,24 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
       case _intconstant:
       case _doubleconstant:
       case _stringconstant:
-        Expr();
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case _minus:
+        case _leftparen:
+        case _new:
+        case _newarray:
+        case _null:
+        case _readln:
+        case _booleanconstant:
+        case _id:
+        case _intconstant:
+        case _doubleconstant:
+        case _stringconstant:
+          Expr();
+          break;
+        default:
+          jj_la1[7] = jj_gen;
+          ;
+        }
         jj_consume_token(_semicolon);
         break;
       case _if:
@@ -1036,7 +823,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
         StmtBlock();
         break;
       default:
-        jj_la1[17] = jj_gen;
+        jj_la1[8] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1061,33 +848,17 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void IfStmt() throws ParseException {
+  static final public void IfStmt() throws ParseException {
  /*@bgen(jjtree) IfStmt */
   SimpleNode jjtn000 = new SimpleNode(JJTIFSTMT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _if:
-        jj_consume_token(_if);
-        jj_consume_token(_leftparen);
-        Expr();
-        jj_consume_token(_rightparen);
-        Stmt();
-        break;
-        jj_consume_token(_if);
-        jj_consume_token(_leftparen);
-        Expr();
-        jj_consume_token(_rightparen);
-        Stmt();
-        jj_consume_token(_else);
-        Stmt();
-        break;
-      default:
-        jj_la1[18] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      jj_consume_token(_if);
+      jj_consume_token(_leftparen);
+      Expr();
+      jj_consume_token(_rightparen);
+      Stmt();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1109,7 +880,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void WhileStmt() throws ParseException {
+  static final public void WhileStmt() throws ParseException {
  /*@bgen(jjtree) WhileStmt */
   SimpleNode jjtn000 = new SimpleNode(JJTWHILESTMT);
   boolean jjtc000 = true;
@@ -1141,55 +912,19 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void ForStmt() throws ParseException {
+  static final public void ForStmt() throws ParseException {
  /*@bgen(jjtree) ForStmt */
   SimpleNode jjtn000 = new SimpleNode(JJTFORSTMT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _for:
-        jj_consume_token(_for);
-        jj_consume_token(_leftparen);
-        jj_consume_token(_semicolon);
-        Expr();
-        jj_consume_token(_semicolon);
-        jj_consume_token(_rightparen);
-        Stmt();
-        break;
-        jj_consume_token(_for);
-        jj_consume_token(_leftparen);
-        Expr();
-        jj_consume_token(_semicolon);
-        Expr();
-        jj_consume_token(_semicolon);
-        jj_consume_token(_rightparen);
-        Stmt();
-        break;
-        jj_consume_token(_for);
-        jj_consume_token(_leftparen);
-        jj_consume_token(_semicolon);
-        Expr();
-        jj_consume_token(_semicolon);
-        Expr();
-        jj_consume_token(_rightparen);
-        Stmt();
-        break;
-        jj_consume_token(_for);
-        jj_consume_token(_leftparen);
-        Expr();
-        jj_consume_token(_semicolon);
-        Expr();
-        jj_consume_token(_semicolon);
-        Expr();
-        jj_consume_token(_rightparen);
-        Stmt();
-        break;
-      default:
-        jj_la1[19] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      jj_consume_token(_for);
+      jj_consume_token(_leftparen);
+      jj_consume_token(_semicolon);
+      Expr();
+      jj_consume_token(_semicolon);
+      jj_consume_token(_rightparen);
+      Stmt();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1211,7 +946,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void BreakStmt() throws ParseException {
+  static final public void BreakStmt() throws ParseException {
  /*@bgen(jjtree) BreakStmt */
   SimpleNode jjtn000 = new SimpleNode(JJTBREAKSTMT);
   boolean jjtc000 = true;
@@ -1226,40 +961,14 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void ReturnStmt() throws ParseException {
+  static final public void ReturnStmt() throws ParseException {
  /*@bgen(jjtree) ReturnStmt */
   SimpleNode jjtn000 = new SimpleNode(JJTRETURNSTMT);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _return:
-        jj_consume_token(_return);
-        jj_consume_token(_semicolon);
-        break;
-        jj_consume_token(_return);
-        Expr();
-        jj_consume_token(_semicolon);
-        break;
-      default:
-        jj_la1[20] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
-    } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      {if (true) throw (RuntimeException)jjte000;}
-    }
-    if (jjte000 instanceof ParseException) {
-      {if (true) throw (ParseException)jjte000;}
-    }
-    {if (true) throw (Error)jjte000;}
+      jj_consume_token(_return);
+      jj_consume_token(_semicolon);
     } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
@@ -1267,7 +976,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void PrintStmt() throws ParseException {
+  static final public void PrintStmt() throws ParseException {
  /*@bgen(jjtree) PrintStmt */
   SimpleNode jjtn000 = new SimpleNode(JJTPRINTSTMT);
   boolean jjtc000 = true;
@@ -1299,35 +1008,13 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void ExprList() throws ParseException {
+  static final public void ExprList() throws ParseException {
  /*@bgen(jjtree) ExprList */
   SimpleNode jjtn000 = new SimpleNode(JJTEXPRLIST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _minus:
-      case _leftparen:
-      case _new:
-      case _newarray:
-      case _null:
-      case _readln:
-      case _booleanconstant:
-      case _id:
-      case _intconstant:
-      case _doubleconstant:
-      case _stringconstant:
-        Expr();
-        break;
-        Expr();
-        jj_consume_token(_comma);
-        ExprList();
-        break;
-      default:
-        jj_la1[21] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      Expr();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1349,7 +1036,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Expr() throws ParseException {
+  static final public void Expr() throws ParseException {
  /*@bgen(jjtree) Expr */
   SimpleNode jjtn000 = new SimpleNode(JJTEXPR);
   boolean jjtc000 = true;
@@ -1365,7 +1052,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
         ExprPrime();
         break;
       default:
-        jj_la1[23] = jj_gen;
+        jj_la1[10] = jj_gen;
         if (jj_2_1(2147483647)) {
           Call();
           ExprPrime();
@@ -1379,7 +1066,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
               Expr();
               break;
             default:
-              jj_la1[22] = jj_gen;
+              jj_la1[9] = jj_gen;
 
             }
             ExprPrime();
@@ -1416,7 +1103,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
             ExprPrime();
             break;
           default:
-            jj_la1[24] = jj_gen;
+            jj_la1[11] = jj_gen;
             jj_consume_token(-1);
             throw new ParseException();
           }
@@ -1443,7 +1130,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void ExprPrime() throws ParseException {
+  static final public void ExprPrime() throws ParseException {
  /*@bgen(jjtree) ExprPrime */
   SimpleNode jjtn000 = new SimpleNode(JJTEXPRPRIME);
   boolean jjtc000 = true;
@@ -1507,7 +1194,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
         Expr();
         break;
       default:
-        jj_la1[25] = jj_gen;
+        jj_la1[12] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1532,7 +1219,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void LValue() throws ParseException {
+  static final public void LValue() throws ParseException {
  /*@bgen(jjtree) LValue */
   SimpleNode jjtn000 = new SimpleNode(JJTLVALUE);
   boolean jjtc000 = true;
@@ -1547,7 +1234,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
           ;
           break;
         default:
-          jj_la1[26] = jj_gen;
+          jj_la1[13] = jj_gen;
           break label_1;
         }
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -1561,7 +1248,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
           jj_consume_token(_id);
           break;
         default:
-          jj_la1[27] = jj_gen;
+          jj_la1[14] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -1587,7 +1274,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Call() throws ParseException {
+  static final public void Call() throws ParseException {
  /*@bgen(jjtree) Call */
   SimpleNode jjtn000 = new SimpleNode(JJTCALL);
   boolean jjtc000 = true;
@@ -1609,7 +1296,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
           jj_consume_token(_rightparen);
           break;
         default:
-          jj_la1[28] = jj_gen;
+          jj_la1[15] = jj_gen;
           jj_consume_token(-1);
           throw new ParseException();
         }
@@ -1635,34 +1322,13 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Actuals() throws ParseException {
+  static final public void Actuals() throws ParseException {
  /*@bgen(jjtree) Actuals */
   SimpleNode jjtn000 = new SimpleNode(JJTACTUALS);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case _minus:
-      case _leftparen:
-      case _new:
-      case _newarray:
-      case _null:
-      case _readln:
-      case _booleanconstant:
-      case _id:
-      case _intconstant:
-      case _doubleconstant:
-      case _stringconstant:
-        ExprList();
-        break;
-      case 61:
-        jj_consume_token(61);
-        break;
-      default:
-        jj_la1[29] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+      ExprList();
     } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1684,7 +1350,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  final public void Constant() throws ParseException {
+  static final public void Constant() throws ParseException {
  /*@bgen(jjtree) Constant */
   SimpleNode jjtn000 = new SimpleNode(JJTCONSTANT);
   boolean jjtc000 = true;
@@ -1707,7 +1373,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
         jj_consume_token(_null);
         break;
       default:
-        jj_la1[30] = jj_gen;
+        jj_la1[16] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -1718,21 +1384,34 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     }
   }
 
-  private boolean jj_2_1(int xla) {
+  static private boolean jj_2_1(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(0, xla); }
   }
 
-  private boolean jj_2_2(int xla) {
+  static private boolean jj_2_2(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_2(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
   }
 
-  private boolean jj_3_1() {
+  static private boolean jj_3R_2() {
+    if (jj_scan_token(_period)) return true;
+    if (jj_scan_token(_id)) return true;
+    if (jj_scan_token(_leftparen)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_2() {
+    if (jj_scan_token(_id)) return true;
+    if (jj_scan_token(_leftparen)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_1() {
     if (jj_scan_token(_id)) return true;
     Token xsp;
     xsp = jj_scanpos;
@@ -1743,31 +1422,19 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     return false;
   }
 
-  private boolean jj_3R_2() {
-    if (jj_scan_token(_period)) return true;
-    if (jj_scan_token(_id)) return true;
-    if (jj_scan_token(_leftparen)) return true;
-    return false;
-  }
-
-  private boolean jj_3_2() {
-    if (jj_scan_token(_id)) return true;
-    if (jj_scan_token(_leftparen)) return true;
-    return false;
-  }
-
+  static private boolean jj_initialized_once = false;
   /** Generated Token Manager. */
-  public MyNewGrammarTokenManager token_source;
-  SimpleCharStream jj_input_stream;
+  static public MyNewGrammarTokenManager token_source;
+  static SimpleCharStream jj_input_stream;
   /** Current token. */
-  public Token token;
+  static public Token token;
   /** Next token. */
-  public Token jj_nt;
-  private int jj_ntk;
-  private Token jj_scanpos, jj_lastpos;
-  private int jj_la;
-  private int jj_gen;
-  final private int[] jj_la1 = new int[31];
+  static public Token jj_nt;
+  static private int jj_ntk;
+  static private Token jj_scanpos, jj_lastpos;
+  static private int jj_la;
+  static private int jj_gen;
+  static final private int[] jj_la1 = new int[17];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -1775,14 +1442,14 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0xa0000000,0xa0000000,0x20000000,0x20000000,0x20000000,0x20000000,0x80000000,0x20000000,0x0,0x0,0x20000000,0x0,0x20000000,0x20000000,0x40000,0x20000000,0x40044840,0x40044840,0x0,0x0,0x0,0x4040,0x400,0x0,0x4040,0x1ff003e0,0x12000,0x12000,0x0,0x4040,0x0,};
+      jj_la1_0 = new int[] {0xa0000000,0x20000000,0x10000,0x20000000,0x0,0x0,0x20000000,0x4040,0x40044840,0x400,0x0,0x4040,0x1ff003e0,0x12000,0x12000,0x0,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x4c0c1,0x4c0c1,0x44041,0x4c041,0x20044041,0x44041,0x0,0x4c041,0x24,0x20,0x4c041,0x80,0x4c041,0x4c041,0x0,0x44041,0x3f3f18,0x3f3f18,0x10,0x8,0x2000,0x3e1700,0x0,0x3a0400,0x41300,0x0,0x0,0x0,0x40000,0x203e1700,0x3a0400,};
+      jj_la1_1 = new int[] {0x440c1,0x44041,0x0,0x4c041,0x4,0x24,0x4c041,0x3e1700,0x3f3f18,0x0,0x3a0400,0x41300,0x0,0x0,0x0,0x40000,0x3a0400,};
    }
-  final private JJCalls[] jj_2_rtns = new JJCalls[2];
-  private boolean jj_rescan = false;
-  private int jj_gc = 0;
+  static final private JJCalls[] jj_2_rtns = new JJCalls[2];
+  static private boolean jj_rescan = false;
+  static private int jj_gc = 0;
 
   /** Constructor with InputStream. */
   public MyNewGrammar(java.io.InputStream stream) {
@@ -1790,61 +1457,82 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
   }
   /** Constructor with InputStream and supplied encoding */
   public MyNewGrammar(java.io.InputStream stream, String encoding) {
+    if (jj_initialized_once) {
+      System.out.println("ERROR: Second call to constructor of static parser.  ");
+      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
+      System.out.println("       during parser generation.");
+      throw new Error();
+    }
+    jj_initialized_once = true;
     try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source = new MyNewGrammarTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Reinitialise. */
-  public void ReInit(java.io.InputStream stream) {
+  static public void ReInit(java.io.InputStream stream) {
      ReInit(stream, null);
   }
   /** Reinitialise. */
-  public void ReInit(java.io.InputStream stream, String encoding) {
+  static public void ReInit(java.io.InputStream stream, String encoding) {
     try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Constructor. */
   public MyNewGrammar(java.io.Reader stream) {
+    if (jj_initialized_once) {
+      System.out.println("ERROR: Second call to constructor of static parser. ");
+      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
+      System.out.println("       during parser generation.");
+      throw new Error();
+    }
+    jj_initialized_once = true;
     jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new MyNewGrammarTokenManager(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Reinitialise. */
-  public void ReInit(java.io.Reader stream) {
+  static public void ReInit(java.io.Reader stream) {
     jj_input_stream.ReInit(stream, 1, 1);
     token_source.ReInit(jj_input_stream);
     token = new Token();
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
   /** Constructor with generated Token Manager. */
   public MyNewGrammar(MyNewGrammarTokenManager tm) {
+    if (jj_initialized_once) {
+      System.out.println("ERROR: Second call to constructor of static parser. ");
+      System.out.println("       You must either use ReInit() or set the JavaCC option STATIC to false");
+      System.out.println("       during parser generation.");
+      throw new Error();
+    }
+    jj_initialized_once = true;
     token_source = tm;
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
@@ -1855,11 +1543,11 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     jj_ntk = -1;
     jjtree.reset();
     jj_gen = 0;
-    for (int i = 0; i < 31; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 17; i++) jj_la1[i] = -1;
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
-  private Token jj_consume_token(int kind) throws ParseException {
+  static private Token jj_consume_token(int kind) throws ParseException {
     Token oldToken;
     if ((oldToken = token).next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
@@ -1884,8 +1572,8 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
   }
 
   static private final class LookaheadSuccess extends java.lang.Error { }
-  final private LookaheadSuccess jj_ls = new LookaheadSuccess();
-  private boolean jj_scan_token(int kind) {
+  static final private LookaheadSuccess jj_ls = new LookaheadSuccess();
+  static private boolean jj_scan_token(int kind) {
     if (jj_scanpos == jj_lastpos) {
       jj_la--;
       if (jj_scanpos.next == null) {
@@ -1908,7 +1596,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
 
 
 /** Get the next Token. */
-  final public Token getNextToken() {
+  static final public Token getNextToken() {
     if (token.next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
     jj_ntk = -1;
@@ -1917,7 +1605,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
   }
 
 /** Get the specific Token. */
-  final public Token getToken(int index) {
+  static final public Token getToken(int index) {
     Token t = token;
     for (int i = 0; i < index; i++) {
       if (t.next != null) t = t.next;
@@ -1926,20 +1614,20 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     return t;
   }
 
-  private int jj_ntk() {
+  static private int jj_ntk() {
     if ((jj_nt=token.next) == null)
       return (jj_ntk = (token.next=token_source.getNextToken()).kind);
     else
       return (jj_ntk = jj_nt.kind);
   }
 
-  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
-  private int[] jj_expentry;
-  private int jj_kind = -1;
-  private int[] jj_lasttokens = new int[100];
-  private int jj_endpos;
+  static private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
+  static private int[] jj_expentry;
+  static private int jj_kind = -1;
+  static private int[] jj_lasttokens = new int[100];
+  static private int jj_endpos;
 
-  private void jj_add_error_token(int kind, int pos) {
+  static private void jj_add_error_token(int kind, int pos) {
     if (pos >= 100) return;
     if (pos == jj_endpos + 1) {
       jj_lasttokens[jj_endpos++] = kind;
@@ -1965,14 +1653,14 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
   }
 
   /** Generate ParseException. */
-  public ParseException generateParseException() {
+  static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[62];
+    boolean[] la1tokens = new boolean[61];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 31; i++) {
+    for (int i = 0; i < 17; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -1984,7 +1672,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
         }
       }
     }
-    for (int i = 0; i < 62; i++) {
+    for (int i = 0; i < 61; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
@@ -2002,14 +1690,14 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
   }
 
   /** Enable tracing. */
-  final public void enable_tracing() {
+  static final public void enable_tracing() {
   }
 
   /** Disable tracing. */
-  final public void disable_tracing() {
+  static final public void disable_tracing() {
   }
 
-  private void jj_rescan_token() {
+  static private void jj_rescan_token() {
     jj_rescan = true;
     for (int i = 0; i < 2; i++) {
     try {
@@ -2029,7 +1717,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     jj_rescan = false;
   }
 
-  private void jj_save(int index, int xla) {
+  static private void jj_save(int index, int xla) {
     JJCalls p = jj_2_rtns[index];
     while (p.gen > jj_gen) {
       if (p.next == null) { p = p.next = new JJCalls(); break; }

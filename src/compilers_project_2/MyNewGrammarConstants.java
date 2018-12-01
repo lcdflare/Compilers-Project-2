@@ -191,7 +191,6 @@ public interface MyNewGrammarConstants {
     "\"/*\"",
     "\"*/\"",
     "<token of kind 60>",
-    "\"\"",
   };
 
 }

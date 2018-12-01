@@ -2,7 +2,7 @@
  * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
  */options
 {
-  static = false;
+  static = true;
 }
 
 PARSER_BEGIN( MyNewGrammar )
@@ -67,8 +67,10 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     
 	try
 	{
+	  	SimpleNode n = MyNewGrammar.Start();
+      	n.dump("");
 	    parser.trie = new Trie();
-	    parser.Start();
+	    
   	}
 	catch ( Exception e )
   	{
@@ -184,6 +186,7 @@ SKIP : /* COMMENTS */
   < ML_COMMENT_END : "*/" > : DEFAULT
 | < ~[] >
 }SimpleNode Start() :{
+  /*
 	while ( jj_ntk == -1 )
   	{
  		// Get the next token
@@ -218,53 +221,65 @@ SKIP : /* COMMENTS */
 	// Print the symbol table
 	System.out.print( "\n\nPrinting trie...\n\n " );
   	trie.display();
+  	*/
 }{  Program()  {    return jjtThis;  }}void Program() :{}{  Decl()
-  | Decl() Program()}void Decl() :{}{  VariableDecl()
-  | FunctionDecl()
+  //| Decl() Program()}void Decl() :{}{  VariableDecl()
+  //| FunctionDecl()
   | ClassDecl()
-  | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int >
+  | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int > TypePrime()
+| < _double > TypePrime()
+| < _boolean > TypePrime()
+| < _string > TypePrime()
+| < _id > TypePrime()
+| < _int >
 | < _double >
 | < _boolean >
 | < _string >
-//| Type() < _leftbracket > < _rightbracket >   left recursion
-| < _id >}void FunctionDecl() :{}{  Type() < _id > <_leftparen > Formals() <_rightparen > StmtBlock()
+| < _id >}
+void TypePrime() :
+{}
+{
+	< _leftbracket > < _rightbracket > TypePrime()
+| 	< _leftbracket > < _rightbracket >
+}
+void FunctionDecl() :{}{  Type() < _id > <_leftparen > Formals() <_rightparen > StmtBlock()
 | < _void > < _id > < _leftparen > Formals() < _rightparen > StmtBlock()}
 
 void Formals() :
 {}
 {
   VariableList()
-| "" // for empty
+//| "" // for empty
 }
 
 void VariableList() :
 {}
 {
   Variable() < _comma > VariableList()
-| Variable()
+//| Variable()
 }
 
 void ClassDecl() :
 {}
 {
-  < _class > < _id > < _leftbrace > < _rightbrace >
-| < _class > < _id > < _leftbrace > FieldList() < _rightbrace >
-| < _class > < _id > ClassOptions() < _leftbrace > < _rightbrace >
-| < _class > < _id > ClassOptions() < _leftbrace > FieldList() < _rightbrace >
+  < _class > < _id > [ < _extends > < _id > ] < _leftbrace > < _rightbrace >
+//| < _class > < _id > < _leftbrace > FieldList() < _rightbrace >
+//| < _class > < _id > ClassOptions() < _leftbrace > < _rightbrace >
+//| < _class > < _id > ClassOptions() < _leftbrace > FieldList() < _rightbrace >
 }
 
 void FieldList() :
 {}
 {
   Field()
-| Field() FieldList()
+//| Field() FieldList()
 }
 
 void ClassOptions() :
 {}
 {
   < _extends > < _id >
-| < _extends > < _id > ImplementsList()
+//| < _extends > < _id > ImplementsList()
 | ImplementsList()
 }
 
@@ -272,28 +287,28 @@ void ImplementsList() :
 {}
 {
   < _implements > < _id >
-| < _implements > < _id > < _comma > ImplementsList()
+//| < _implements > < _id > < _comma > ImplementsList()
 }
 
 void Field() :
 {}
 {
   VariableDecl()
-| FunctionDecl()
+//| FunctionDecl()
 }
 
 void InterfaceDecl() :
 {}
 {
   < _interface > < _id > < _leftbrace > < _rightbrace >
-| < _interface > < _id > < _leftbrace > PrototypeList() < _rightbrace >
+//| < _interface > < _id > < _leftbrace > PrototypeList() < _rightbrace >
 }
 
 void PrototypeList() :
 {}
 {
   Prototype()
-| Prototype() PrototypeList()
+//| Prototype() PrototypeList()
 }
 
 void Prototype() :
@@ -307,30 +322,29 @@ void StmtBlock() :
 {}
 {
   < _leftbrace > < _rightbrace >
-| < _leftbrace > VariableDeclList() < _rightbrace >
-| < _leftbrace > StmtList() < _rightbrace >
-| < _leftbrace > VariableDeclList() StmtList() < _rightbrace >
+//| < _leftbrace > VariableDeclList() < _rightbrace >
+//| < _leftbrace > StmtList() < _rightbrace >
+//| < _leftbrace > VariableDeclList() StmtList() < _rightbrace >
 }
 
 void VariableDeclList() :
 {}
 {
   VariableDecl()
-| VariableDecl() VariableDeclList()
+//| VariableDecl() VariableDeclList()
 }
 
 void StmtList() :
 {}
 {
   Stmt()
-| Stmt() StmtList()
+//| Stmt() StmtList()
 }
 
 void Stmt() :
 {}
 {
-  < _semicolon >
-| Expr() < _semicolon >
+  [ Expr() ] < _semicolon >
 | IfStmt()
 | WhileStmt()
 | ForStmt()
@@ -344,7 +358,7 @@ void IfStmt() :
 {}
 {
   < _if > < _leftparen > Expr() < _rightparen > Stmt()
-| < _if > < _leftparen > Expr() < _rightparen > Stmt() < _else > Stmt()
+//| < _if > < _leftparen > Expr() < _rightparen > Stmt() < _else > Stmt()
 }
 
 void WhileStmt() :
@@ -357,9 +371,9 @@ void ForStmt() :
 {}
 {
   < _for > < _leftparen > < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()
-| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()
-| < _for > < _leftparen > < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
-| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
+//| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > < _rightparen > Stmt()
+//| < _for > < _leftparen > < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
+//| < _for > < _leftparen > Expr() < _semicolon > Expr() < _semicolon > Expr() < _rightparen > Stmt()
 }
 
 void BreakStmt() :
@@ -372,7 +386,7 @@ void ReturnStmt() :
 {}
 {
   < _return > < _semicolon >
-| < _return > Expr() < _semicolon >
+//| < _return > Expr() < _semicolon >
 }
 
 void PrintStmt() :
@@ -385,7 +399,7 @@ void ExprList() :
 {}
 {
   Expr()
-| Expr() < _comma > ExprList()
+//| Expr() < _comma > ExprList()
 }
 
 void Expr() :
@@ -460,7 +474,7 @@ void Actuals() :
 {}
 {
   ExprList()
-| "" // for empty
+//| "" // for empty
 }
 
 void Constant() :
