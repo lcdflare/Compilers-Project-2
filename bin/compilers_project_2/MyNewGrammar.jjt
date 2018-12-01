@@ -222,9 +222,10 @@ SKIP : /* COMMENTS */
 	System.out.print( "\n\nPrinting trie...\n\n " );
   	trie.display();
   	*/
-}{  Program()  {    return jjtThis;  }}void Program() :{}{  Decl()
-  //| Decl() Program()}void Decl() :{}{  VariableDecl()
-  //| FunctionDecl()
+}{  Program()  {    return jjtThis;  }}void Program() :{}{
+  Decl() [ Program() ]}void Decl() :{}{
+  LOOKAHEAD(3) VariableDecl()
+  | FunctionDecl()
   | ClassDecl()
   | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int > (< _leftbracket > < _rightbracket >)* 
 | < _double > (< _leftbracket > < _rightbracket >)* 
@@ -262,15 +263,14 @@ void ImplementsList() :
 void FieldList() :
 {}
 {
-  Field()
-//| Field() FieldList()
+  Field() [ FieldList() ]
 }
 
 void Field() :
 {}
 {
-  VariableDecl()
-//| FunctionDecl()
+  LOOKAHEAD(3) VariableDecl()
+| FunctionDecl()
 }
 
 void InterfaceDecl() :
