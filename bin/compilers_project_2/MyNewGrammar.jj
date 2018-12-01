@@ -371,67 +371,17 @@ SKIP : /* COMMENTS */
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}{/*@bgen(jjtree) Type */
   try {
-/*@egen*/  < _int > TypePrime()
-| < _double > TypePrime()
-| < _boolean > TypePrime()
-| < _string > TypePrime()
-| < _id > TypePrime()
-| < _int >
-| < _double >
-| < _boolean >
-| < _string >
-| < _id >/*@bgen(jjtree)*/
-  } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
-    }
-    if (jjte000 instanceof RuntimeException) {
-      throw (RuntimeException)jjte000;
-    }
-    if (jjte000 instanceof ParseException) {
-      throw (ParseException)jjte000;
-    }
-    throw (Error)jjte000;
+/*@egen*/  < _int > (< _leftbracket > < _rightbracket >)* 
+| < _double > (< _leftbracket > < _rightbracket >)* 
+| < _boolean > (< _leftbracket > < _rightbracket >)* 
+| < _string > (< _leftbracket > < _rightbracket >)* 
+| < _id > (< _leftbracket > < _rightbracket >)*/*@bgen(jjtree)*/
   } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
     }
   }
-/*@egen*/}
-void TypePrime() :
-{/*@bgen(jjtree) TypePrime */
-  SimpleNode jjtn000 = new SimpleNode(JJTTYPEPRIME);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) TypePrime */
-        try {
-/*@egen*/
-	< _leftbracket > < _rightbracket > TypePrime()
-| 	< _leftbracket > < _rightbracket >/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
+/*@egen*/ 
 }
 void FunctionDecl() :{/*@bgen(jjtree) FunctionDecl */
   SimpleNode jjtn000 = new SimpleNode(JJTFUNCTIONDECL);

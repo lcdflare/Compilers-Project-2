@@ -226,21 +226,11 @@ SKIP : /* COMMENTS */
   //| Decl() Program()}void Decl() :{}{  VariableDecl()
   //| FunctionDecl()
   | ClassDecl()
-  | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int > TypePrime()
-| < _double > TypePrime()
-| < _boolean > TypePrime()
-| < _string > TypePrime()
-| < _id > TypePrime()
-| < _int >
-| < _double >
-| < _boolean >
-| < _string >
-| < _id >}
-void TypePrime() :
-{}
-{
-	< _leftbracket > < _rightbracket > TypePrime()
-| 	< _leftbracket > < _rightbracket >
+  | InterfaceDecl()}void VariableDecl() :{}{  Variable() < _semicolon >}void Variable() :{}{  Type() < _id >}void Type() :{}{  < _int > (< _leftbracket > < _rightbracket >)* 
+| < _double > (< _leftbracket > < _rightbracket >)* 
+| < _boolean > (< _leftbracket > < _rightbracket >)* 
+| < _string > (< _leftbracket > < _rightbracket >)* 
+| < _id > (< _leftbracket > < _rightbracket >)* 
 }
 void FunctionDecl() :{}{  Type() < _id > <_leftparen > Formals() <_rightparen > StmtBlock()
 | < _void > < _id > < _leftparen > Formals() < _rightparen > StmtBlock()}

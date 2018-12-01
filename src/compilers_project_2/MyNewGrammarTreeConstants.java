@@ -9,35 +9,34 @@ public interface MyNewGrammarTreeConstants
   public int JJTVARIABLEDECL = 3;
   public int JJTVARIABLE = 4;
   public int JJTTYPE = 5;
-  public int JJTTYPEPRIME = 6;
-  public int JJTFUNCTIONDECL = 7;
-  public int JJTFORMALS = 8;
-  public int JJTVARIABLELIST = 9;
-  public int JJTCLASSDECL = 10;
-  public int JJTFIELDLIST = 11;
-  public int JJTCLASSOPTIONS = 12;
-  public int JJTIMPLEMENTSLIST = 13;
-  public int JJTFIELD = 14;
-  public int JJTINTERFACEDECL = 15;
-  public int JJTPROTOTYPELIST = 16;
-  public int JJTPROTOTYPE = 17;
-  public int JJTSTMTBLOCK = 18;
-  public int JJTVARIABLEDECLLIST = 19;
-  public int JJTSTMTLIST = 20;
-  public int JJTSTMT = 21;
-  public int JJTIFSTMT = 22;
-  public int JJTWHILESTMT = 23;
-  public int JJTFORSTMT = 24;
-  public int JJTBREAKSTMT = 25;
-  public int JJTRETURNSTMT = 26;
-  public int JJTPRINTSTMT = 27;
-  public int JJTEXPRLIST = 28;
-  public int JJTEXPR = 29;
-  public int JJTEXPRPRIME = 30;
-  public int JJTLVALUE = 31;
-  public int JJTCALL = 32;
-  public int JJTACTUALS = 33;
-  public int JJTCONSTANT = 34;
+  public int JJTFUNCTIONDECL = 6;
+  public int JJTFORMALS = 7;
+  public int JJTVARIABLELIST = 8;
+  public int JJTCLASSDECL = 9;
+  public int JJTFIELDLIST = 10;
+  public int JJTCLASSOPTIONS = 11;
+  public int JJTIMPLEMENTSLIST = 12;
+  public int JJTFIELD = 13;
+  public int JJTINTERFACEDECL = 14;
+  public int JJTPROTOTYPELIST = 15;
+  public int JJTPROTOTYPE = 16;
+  public int JJTSTMTBLOCK = 17;
+  public int JJTVARIABLEDECLLIST = 18;
+  public int JJTSTMTLIST = 19;
+  public int JJTSTMT = 20;
+  public int JJTIFSTMT = 21;
+  public int JJTWHILESTMT = 22;
+  public int JJTFORSTMT = 23;
+  public int JJTBREAKSTMT = 24;
+  public int JJTRETURNSTMT = 25;
+  public int JJTPRINTSTMT = 26;
+  public int JJTEXPRLIST = 27;
+  public int JJTEXPR = 28;
+  public int JJTEXPRPRIME = 29;
+  public int JJTLVALUE = 30;
+  public int JJTCALL = 31;
+  public int JJTACTUALS = 32;
+  public int JJTCONSTANT = 33;
 
 
   public String[] jjtNodeName = {
@@ -47,7 +46,6 @@ public interface MyNewGrammarTreeConstants
     "VariableDecl",
     "Variable",
     "Type",
-    "TypePrime",
     "FunctionDecl",
     "Formals",
     "VariableList",
@@ -78,4 +76,4 @@ public interface MyNewGrammarTreeConstants
     "Constant",
   };
 }
-/* JavaCC - OriginalChecksum=ddb0218219cf828490add824f7f6c3c6 (do not edit this line) */
+/* JavaCC - OriginalChecksum=a0297b9bccd965a5b43eec7b1f106aca (do not edit this line) */
