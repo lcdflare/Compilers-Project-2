@@ -421,7 +421,7 @@ void Formals() :
 {/*@bgen(jjtree) Formals */
   try {
 /*@egen*/
-  VariableList()/*@bgen(jjtree)*/
+  [VariableList()]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -442,7 +442,6 @@ void Formals() :
     }
   }
 /*@egen*/
-//| "" // for empty
 }
 
 void VariableList() :
@@ -454,7 +453,7 @@ void VariableList() :
 {/*@bgen(jjtree) VariableList */
   try {
 /*@egen*/
-  Variable() < _comma > VariableList()/*@bgen(jjtree)*/
+  Variable() [< _comma > VariableList()]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -475,7 +474,6 @@ void VariableList() :
     }
   }
 /*@egen*/
-//| Variable()
 }
 
 void ClassDecl() :
@@ -627,26 +625,7 @@ void InterfaceDecl() :
 {/*@bgen(jjtree) InterfaceDecl */
   try {
 /*@egen*/
-  < _interface > < _id > < _leftbrace > < _rightbrace >/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-  }
-/*@egen*/
-//| < _interface > < _id > < _leftbrace > PrototypeList() < _rightbrace >
-}
-
-void PrototypeList() :
-{/*@bgen(jjtree) PrototypeList */
-  SimpleNode jjtn000 = new SimpleNode(JJTPROTOTYPELIST);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) PrototypeList */
-  try {
-/*@egen*/
-  Prototype()/*@bgen(jjtree)*/
+  < _interface > < _id > < _leftbrace > [PrototypeList()] < _rightbrace >/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -667,7 +646,38 @@ void PrototypeList() :
     }
   }
 /*@egen*/
-//| Prototype() PrototypeList()
+}
+
+void PrototypeList() :
+{/*@bgen(jjtree) PrototypeList */
+  SimpleNode jjtn000 = new SimpleNode(JJTPROTOTYPELIST);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) PrototypeList */
+  try {
+/*@egen*/
+  Prototype() [PrototypeList()]/*@bgen(jjtree)*/
+  } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      throw (RuntimeException)jjte000;
+    }
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
+    }
+    throw (Error)jjte000;
+  } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+  }
+/*@egen*/
 }
 
 void Prototype() :

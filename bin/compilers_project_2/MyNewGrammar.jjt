@@ -238,15 +238,13 @@ SKIP : /* COMMENTS */
 void Formals() :
 {}
 {
-  VariableList()
-//| "" // for empty
+  [VariableList()]
 }
 
 void VariableList() :
 {}
 {
-  Variable() < _comma > VariableList()
-//| Variable()
+  Variable() [< _comma > VariableList()]
 }
 
 void ClassDecl() :
@@ -290,15 +288,13 @@ void Field() :
 void InterfaceDecl() :
 {}
 {
-  < _interface > < _id > < _leftbrace > < _rightbrace >
-//| < _interface > < _id > < _leftbrace > PrototypeList() < _rightbrace >
+  < _interface > < _id > < _leftbrace > [PrototypeList()] < _rightbrace >
 }
 
 void PrototypeList() :
 {}
 {
-  Prototype()
-//| Prototype() PrototypeList()
+  Prototype() [PrototypeList()]
 }
 
 void Prototype() :
