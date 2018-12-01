@@ -295,24 +295,27 @@ void Prototype() :
 void StmtBlock() :
 {}
 {
-  < _leftbrace > < _rightbrace >
-//| < _leftbrace > VariableDeclList() < _rightbrace >
-//| < _leftbrace > StmtList() < _rightbrace >
-//| < _leftbrace > VariableDeclList() StmtList() < _rightbrace >
+  < _leftbrace > StmtBlockPrime()
+}
+
+void StmtBlockPrime() :
+{}
+{
+  [ StmtList() ] < _rightbrace >
+|
+  VariableDeclList() [ StmtList() ] < _rightbrace >
 }
 
 void VariableDeclList() :
 {}
 {
-  VariableDecl()
-//| VariableDecl() VariableDeclList()
+  VariableDecl() ( VariableDeclList() | {} )
 }
 
 void StmtList() :
 {}
 {
-  Stmt()
-//| Stmt() StmtList()
+  Stmt() [ StmtList() ]
 }
 
 void Stmt() :
@@ -331,7 +334,7 @@ void Stmt() :
 void IfStmt() :
 {}
 {
-  < _if > < _leftparen > Expr() < _rightparen > Stmt() [ < _else > Stmt() ]
+  < _if > < _leftparen > Expr() < _rightparen > Stmt() ( ( < _else > Stmt() ) | {} )
 }
 
 void WhileStmt() :
@@ -355,8 +358,7 @@ void BreakStmt() :
 void ReturnStmt() :
 {}
 {
-  < _return > < _semicolon >
-//| < _return > Expr() < _semicolon >
+  < _return > [ Expr() ] < _semicolon >
 }
 
 void PrintStmt() :
@@ -374,11 +376,12 @@ void ExprList() :
 void Expr() :
 {}
 {
+  LOOKAHEAD( < _id > ( ( < _leftparen > ) | ( < _period > < _id > < _leftparen > ) ) )
+  Call() ExprPrime()
+| 
   LValue() [ < _assignop > Expr() ] ExprPrime()
 |
   Constant() ExprPrime()
-|
-  Call() ExprPrime()
 |
   < _leftparen > Expr() < _rightparen > ExprPrime()
 |
@@ -421,6 +424,8 @@ void ExprPrime() :
   < _or > Expr()
 |
   < _not > Expr()
+|
+  {}
 }
 
 void LValue() :
