@@ -13,30 +13,29 @@ public interface MyNewGrammarTreeConstants
   public int JJTFORMALS = 7;
   public int JJTVARIABLELIST = 8;
   public int JJTCLASSDECL = 9;
-  public int JJTFIELDLIST = 10;
-  public int JJTCLASSOPTIONS = 11;
-  public int JJTIMPLEMENTSLIST = 12;
-  public int JJTFIELD = 13;
-  public int JJTINTERFACEDECL = 14;
-  public int JJTPROTOTYPELIST = 15;
-  public int JJTPROTOTYPE = 16;
-  public int JJTSTMTBLOCK = 17;
-  public int JJTVARIABLEDECLLIST = 18;
-  public int JJTSTMTLIST = 19;
-  public int JJTSTMT = 20;
-  public int JJTIFSTMT = 21;
-  public int JJTWHILESTMT = 22;
-  public int JJTFORSTMT = 23;
-  public int JJTBREAKSTMT = 24;
-  public int JJTRETURNSTMT = 25;
-  public int JJTPRINTSTMT = 26;
-  public int JJTEXPRLIST = 27;
-  public int JJTEXPR = 28;
-  public int JJTEXPRPRIME = 29;
-  public int JJTLVALUE = 30;
-  public int JJTCALL = 31;
-  public int JJTACTUALS = 32;
-  public int JJTCONSTANT = 33;
+  public int JJTIMPLEMENTSLIST = 10;
+  public int JJTFIELDLIST = 11;
+  public int JJTFIELD = 12;
+  public int JJTINTERFACEDECL = 13;
+  public int JJTPROTOTYPELIST = 14;
+  public int JJTPROTOTYPE = 15;
+  public int JJTSTMTBLOCK = 16;
+  public int JJTVARIABLEDECLLIST = 17;
+  public int JJTSTMTLIST = 18;
+  public int JJTSTMT = 19;
+  public int JJTIFSTMT = 20;
+  public int JJTWHILESTMT = 21;
+  public int JJTFORSTMT = 22;
+  public int JJTBREAKSTMT = 23;
+  public int JJTRETURNSTMT = 24;
+  public int JJTPRINTSTMT = 25;
+  public int JJTEXPRLIST = 26;
+  public int JJTEXPR = 27;
+  public int JJTEXPRPRIME = 28;
+  public int JJTLVALUE = 29;
+  public int JJTCALL = 30;
+  public int JJTACTUALS = 31;
+  public int JJTCONSTANT = 32;
 
 
   public String[] jjtNodeName = {
@@ -50,9 +49,8 @@ public interface MyNewGrammarTreeConstants
     "Formals",
     "VariableList",
     "ClassDecl",
-    "FieldList",
-    "ClassOptions",
     "ImplementsList",
+    "FieldList",
     "Field",
     "InterfaceDecl",
     "PrototypeList",
@@ -76,4 +74,4 @@ public interface MyNewGrammarTreeConstants
     "Constant",
   };
 }
-/* JavaCC - OriginalChecksum=a0297b9bccd965a5b43eec7b1f106aca (do not edit this line) */
+/* JavaCC - OriginalChecksum=bcb95eb069a602620a17c362402eeab3 (do not edit this line) */

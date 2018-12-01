@@ -250,10 +250,13 @@ void VariableList() :
 void ClassDecl() :
 {}
 {
-  < _class > < _id > [ < _extends > < _id > ] < _leftbrace > < _rightbrace >
-//| < _class > < _id > < _leftbrace > FieldList() < _rightbrace >
-//| < _class > < _id > ClassOptions() < _leftbrace > < _rightbrace >
-//| < _class > < _id > ClassOptions() < _leftbrace > FieldList() < _rightbrace >
+  < _class > < _id > [ < _extends > < _id > ] [ ImplementsList() ] < _leftbrace > [ FieldList() ] < _rightbrace >
+}
+
+void ImplementsList() :
+{}
+{
+  < _implements > < _id > ( < _comma > < _implements > < _id > )* 
 }
 
 void FieldList() :
@@ -261,21 +264,6 @@ void FieldList() :
 {
   Field()
 //| Field() FieldList()
-}
-
-void ClassOptions() :
-{}
-{
-  < _extends > < _id >
-//| < _extends > < _id > ImplementsList()
-| ImplementsList()
-}
-
-void ImplementsList() :
-{}
-{
-  < _implements > < _id >
-//| < _implements > < _id > < _comma > ImplementsList()
 }
 
 void Field() :
