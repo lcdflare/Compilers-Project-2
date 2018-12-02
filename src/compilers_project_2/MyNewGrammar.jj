@@ -56,6 +56,37 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
       		// We have a file to parse
       		System.out.println( "file specified! Reading from file...\n" );
       		parser = new MyNewGrammar( new FileInputStream( args[0] ) );
+
+      		// Display tokens
+			while ( jj_ntk == -1 )
+		  	{
+		 		// Get the next token
+		 		Token token = getNextToken();
+		 		//System.out.print( token.toString() + " " );
+		
+			 	if ( tokenName[token.kind].equals( "EOF" ) )
+			 	{
+				   	// End of File. Terminate
+				   	break;
+			 	}	
+			 	else if ( tokenName[token.kind].equals( "EOL" ) )
+			 	{
+				   	// New line 
+				   	System.out.print( "\n" );
+			 	}
+			 	else
+			 	{
+			 	  	// Print the type of token we're parsing
+				 	System.out.println( tokenName[token.kind] + " " );
+		
+			 	}
+				 
+			}
+			System.out.println();
+			System.out.println();
+			
+			// Reinitialize parser
+			ReInit(new FileInputStream( args[0]));
   		}
   		catch ( FileNotFoundException e )
   		{
@@ -191,44 +222,7 @@ SKIP : /* COMMENTS */
   SimpleNode jjtn000 = new SimpleNode(JJTSTART);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
-/*@egen*/
-  /*
-	while ( jj_ntk == -1 )
-  	{
- 		// Get the next token
- 		Token token = getNextToken();
- 		//System.out.print( token.toString() + " " );
-
-	 	if ( tokenName[token.kind].equals( "EOF" ) )
-	 	{
-		   	// End of File. Terminate
-		   	break;
-	 	}	
-	 	else if ( tokenName[token.kind].equals( "EOL" ) )
-	 	{
-		   	// New line 
-		   	System.out.print( "\n" );
-	 	}
-	 	else
-	 	{
-	 	  	// Print the type of token we're parsing
-		 	System.out.print( tokenName[token.kind] + " " );
-
-			// Is this an identifier?
-		 	if ( tokenName[token.kind].equals( "_id" ) )
-		 	{
-		 	  	// Add if to the symbol table
-			 	trie.addIdentifier( token.toString() );
-		 	}
-	 	}
-		 
-	}
-
-	// Print the symbol table
-	System.out.print( "\n\nPrinting trie...\n\n " );
-  	trie.display();
-  	*/
-}{/*@bgen(jjtree) Start */
+/*@egen*/}{/*@bgen(jjtree) Start */
   try {
 /*@egen*/  Program()/*@bgen(jjtree)*/
   {
@@ -1190,8 +1184,6 @@ void ExprPrime() :
   < _and > Expr()
 |
   < _or > Expr()
-|
-  < _not > Expr()
 |/*@bgen(jjtree)*/
   {
     jjtree.closeNodeScope(jjtn000, true);
