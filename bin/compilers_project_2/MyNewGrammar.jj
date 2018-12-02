@@ -46,6 +46,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
 	tokenName[56] = "ALPHABET";
 
     MyNewGrammar parser = null;
+    SimpleNode n;
     
     if ( args.length > 0 )
     {
@@ -71,7 +72,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
     
 	try
 	{
-	  	SimpleNode n = MyNewGrammar.Start();
+	  	n = MyNewGrammar.Start();
       	n.dump("");
 	    parser.trie = new Trie();
 	    
@@ -93,11 +94,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
   " "
 | "\t"
 | "\r"
-}
-
-TOKEN : /* END OF LINE */
-{
-  < EOL : "\n" >
+| "\n"
 }
 
 TOKEN : /* OPERATORS */
@@ -730,6 +727,7 @@ void StmtBlockPrime() :
 {/*@bgen(jjtree) StmtBlockPrime */
   try {
 /*@egen*/
+  LOOKAHEAD( 3 )
   [ StmtList() ] < _rightbrace >
 |
   VariableDeclList() [ StmtList() ] < _rightbrace >/*@bgen(jjtree)*/

@@ -11,8 +11,6 @@ public interface MyNewGrammarConstants {
   /** End of File. */
   int EOF = 0;
   /** RegularExpression Id. */
-  int EOL = 4;
-  /** RegularExpression Id. */
   int _plus = 5;
   /** RegularExpression Id. */
   int _minus = 6;
