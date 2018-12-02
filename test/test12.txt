@@ -1,0 +1,90 @@
+class newClass extends nothing
+{
+	double doubel ( int x, boolean y )
+	{
+		if ( doubel > 0.5E+2 || y == true )
+		{
+			for ( i = 0; i < 10; i = i + 1 )
+			{
+				int test;
+                		x = x * 2 - 5;
+                		println( "This is a string that I am printing. x = " + x );
+                
+                		if ( x > 100 ) 
+                		{
+                   			break;
+                		}
+                		else
+                		{
+                			x = x + 10;
+                		}
+			}
+			y = !y;
+		}
+
+		// This is a comment
+		while ( 1 ) 
+		{
+			// This does nothing
+			String s;
+			s = readln();
+			if ( s == null ) 
+				return;
+		}
+	}
+}
+
+// Comments
+// are
+// fun
+
+int integer()
+{
+	double q;
+	double r;
+	double s;
+	String str;
+	int i;
+
+	q = 2.5E+2;
+	r = 1.2;
+	s = q * r / 2;
+
+	while ( i < s ) 
+	{
+		str = str + "s";
+		i = i + 1;
+	}
+}
+
+/* This is a multi-line comment*/
+
+boolean bool;
+
+/* This is a multi-line comment
+*  that uses
+*  multiple
+*  lines!!!!*/
+
+class face implements something
+{
+	int insane;
+	double voidddvoid;
+
+	void theVoid( string [] args )
+	{
+		if ( args[0] == "arg" && args[1] >= 205 )
+			println( "This is the void" );
+		return;
+	}
+	
+	int insanity ( int in, int sane ) { insane = 0x3453AFE; }
+}
+
+interface classClassclassLassclass
+{
+	void v();
+	type t();
+}
+
+// This is the end of the file
