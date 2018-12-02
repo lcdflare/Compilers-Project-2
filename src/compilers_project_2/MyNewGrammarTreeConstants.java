@@ -22,21 +22,22 @@ public interface MyNewGrammarTreeConstants
   public int JJTSTMTBLOCK = 16;
   public int JJTSTMTBLOCKPRIME = 17;
   public int JJTVARIABLEDECLLIST = 18;
-  public int JJTSTMTLIST = 19;
-  public int JJTSTMT = 20;
-  public int JJTIFSTMT = 21;
-  public int JJTWHILESTMT = 22;
-  public int JJTFORSTMT = 23;
-  public int JJTBREAKSTMT = 24;
-  public int JJTRETURNSTMT = 25;
-  public int JJTPRINTSTMT = 26;
-  public int JJTEXPRLIST = 27;
-  public int JJTEXPR = 28;
-  public int JJTEXPRPRIME = 29;
-  public int JJTLVALUE = 30;
-  public int JJTCALL = 31;
-  public int JJTACTUALS = 32;
-  public int JJTCONSTANT = 33;
+  public int JJTVARIABLEDECLLISTPRIME = 19;
+  public int JJTSTMTLIST = 20;
+  public int JJTSTMT = 21;
+  public int JJTIFSTMT = 22;
+  public int JJTWHILESTMT = 23;
+  public int JJTFORSTMT = 24;
+  public int JJTBREAKSTMT = 25;
+  public int JJTRETURNSTMT = 26;
+  public int JJTPRINTSTMT = 27;
+  public int JJTEXPRLIST = 28;
+  public int JJTEXPR = 29;
+  public int JJTEXPRPRIME = 30;
+  public int JJTLVALUE = 31;
+  public int JJTCALL = 32;
+  public int JJTACTUALS = 33;
+  public int JJTCONSTANT = 34;
 
 
   public String[] jjtNodeName = {
@@ -59,6 +60,7 @@ public interface MyNewGrammarTreeConstants
     "StmtBlock",
     "StmtBlockPrime",
     "VariableDeclList",
+    "VariableDeclListPrime",
     "StmtList",
     "Stmt",
     "IfStmt",
@@ -76,4 +78,4 @@ public interface MyNewGrammarTreeConstants
     "Constant",
   };
 }
-/* JavaCC - OriginalChecksum=876b80683a7eed54fa3e954c3e2f19f3 (do not edit this line) */
+/* JavaCC - OriginalChecksum=babad2756fb163c648962bc9ae9ce9c0 (do not edit this line) */

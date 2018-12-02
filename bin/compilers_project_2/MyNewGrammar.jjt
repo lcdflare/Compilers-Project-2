@@ -2,6 +2,7 @@
  * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
  */options
 {
+  DEBUG_PARSER = true;
   static = true;
 }
 
@@ -307,7 +308,16 @@ void StmtBlockPrime() :
 void VariableDeclList() :
 {}
 {
-  VariableDecl() ( VariableDeclList() | {} )
+  VariableDecl() VariableDeclListPrime()
+}
+
+void VariableDeclListPrime() :
+{}
+{
+  LOOKAHEAD( 2 )
+  VariableDeclList()
+|
+  {}
 }
 
 void StmtList() :
@@ -332,7 +342,7 @@ void Stmt() :
 void IfStmt() :
 {}
 {
-  < _if > < _leftparen > Expr() < _rightparen > Stmt() ( ( < _else > Stmt() ) | {} )
+  < _if > < _leftparen > Expr() < _rightparen > Stmt() [ < _else > Stmt() ]
 }
 
 void WhileStmt() :

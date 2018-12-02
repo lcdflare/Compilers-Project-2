@@ -3,6 +3,7 @@
  * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
  */options
 {
+  DEBUG_PARSER = true;
   static = true;
 }
 
@@ -762,12 +763,47 @@ void VariableDeclList() :
 {/*@bgen(jjtree) VariableDeclList */
   try {
 /*@egen*/
-  VariableDecl() ( VariableDeclList() |/*@bgen(jjtree)*/
-                                        {
-                                          jjtree.closeNodeScope(jjtn000, true);
-                                          jjtc000 = false;
-                                        }
-/*@egen*/ {} )/*@bgen(jjtree)*/
+  VariableDecl() VariableDeclListPrime()/*@bgen(jjtree)*/
+  } catch (Throwable jjte000) {
+    if (jjtc000) {
+      jjtree.clearNodeScope(jjtn000);
+      jjtc000 = false;
+    } else {
+      jjtree.popNode();
+    }
+    if (jjte000 instanceof RuntimeException) {
+      throw (RuntimeException)jjte000;
+    }
+    if (jjte000 instanceof ParseException) {
+      throw (ParseException)jjte000;
+    }
+    throw (Error)jjte000;
+  } finally {
+    if (jjtc000) {
+      jjtree.closeNodeScope(jjtn000, true);
+    }
+  }
+/*@egen*/
+}
+
+void VariableDeclListPrime() :
+{/*@bgen(jjtree) VariableDeclListPrime */
+  SimpleNode jjtn000 = new SimpleNode(JJTVARIABLEDECLLISTPRIME);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) VariableDeclListPrime */
+  try {
+/*@egen*/
+  LOOKAHEAD( 2 )
+  VariableDeclList()
+|/*@bgen(jjtree)*/
+  {
+    jjtree.closeNodeScope(jjtn000, true);
+    jjtc000 = false;
+  }
+/*@egen*/
+  {}/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -870,12 +906,7 @@ void IfStmt() :
 {/*@bgen(jjtree) IfStmt */
   try {
 /*@egen*/
-  < _if > < _leftparen > Expr() < _rightparen > Stmt() ( ( < _else > Stmt() ) |/*@bgen(jjtree)*/
-                                                                                {
-                                                                                  jjtree.closeNodeScope(jjtn000, true);
-                                                                                  jjtc000 = false;
-                                                                                }
-/*@egen*/ {} )/*@bgen(jjtree)*/
+  < _if > < _leftparen > Expr() < _rightparen > Stmt() [ < _else > Stmt() ]/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
