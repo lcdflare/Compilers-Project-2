@@ -1,9 +1,22 @@
 /**
  * JJTree template file created by SF JavaCC plugin 1.5.28+ wizard for JavaCC 1.5.0+
- */options
+/***********************************************************************************
+* Collaborators: Prado, Arden & Francisco Rodriguez
+* Project: 2
+* Due: 12/03/2018
+* Course: cs-4110-01
+*
+* Instructions for Running:
+* The program can be compiled from command line or terminal using the command "javac *.java"
+* This will compile all java files in the source. This step can also be skipped if using the 
+* .class files provided. To run the program, type "java -cp [PATH] compilers_project_2.MyNewGrammar [FILENAME]"
+* Where [PATH] specifies the install path to the compilers_project_2 package, and [FILENAME] specifies the file to be parsed.
+* Included in the program are various test files located in folder /test 
+***********************************************************************************/options
 {
-  DEBUG_PARSER = true;
+  DEBUG_PARSER = false;
   static = true;
+  NODE_CLASS = "ExtendedNode";
 }
 
 PARSER_BEGIN( MyNewGrammar )
@@ -43,7 +56,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
 	tokenName[56] = "ALPHABET";
 
     MyNewGrammar parser = null;
-    SimpleNode n;
+    ExtendedNode n;
     
     if ( args.length > 0 )
     {
@@ -101,6 +114,7 @@ tokenName[0] = "EOF"; tokenName[4] = "EOL";
 	try
 	{
 	  	n = MyNewGrammar.Start();
+	  	System.out.println("Printing parse tree...");
       	n.dump("");
 	    parser.trie = new Trie();
 	    
@@ -214,7 +228,7 @@ SKIP : /* COMMENTS */
 {
   < ML_COMMENT_END : "*/" > : DEFAULT
 | < ~[] >
-}SimpleNode Start() :{}{  Program()  {    return jjtThis;  }}void Program() :{}{
+}ExtendedNode Start() :{}{  Program()  {    return jjtThis;  }}void Program() :{}{
   Decl() [ Program() ]}void Decl() :{}{
   LOOKAHEAD(3) VariableDecl()
   | FunctionDecl()
