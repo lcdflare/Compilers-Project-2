@@ -1,0 +1,5 @@
+class f
+{
+	type t;
+	t = 2;
+}

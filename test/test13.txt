@@ -1,0 +1,9 @@
+function f()
+{
+	while ( true )
+	{
+		if ( x == 2 ) 
+			break;
+		x = x + 1;
+	}
+}

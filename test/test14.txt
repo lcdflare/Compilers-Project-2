@@ -1,0 +1,6 @@
+function f()
+{
+	String s;
+	s = readln();
+        println( s + "this is a string" );
+}
