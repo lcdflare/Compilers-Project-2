@@ -1,5 +1,8 @@
-class f
+function f()
 {
-	type t;
-	t = 2;
+	g = -a + b * c / d - e - f - g + e - a * d;
+	a > b;
+	a > b || d < e;
+	b > d <= e;
+
 }

@@ -33,11 +33,18 @@ public interface MyNewGrammarTreeConstants
   public int JJTPRINTSTMT = 27;
   public int JJTEXPRLIST = 28;
   public int JJTEXPR = 29;
-  public int JJTEXPRPRIME = 30;
-  public int JJTLVALUE = 31;
-  public int JJTCALL = 32;
-  public int JJTACTUALS = 33;
-  public int JJTCONSTANT = 34;
+  public int JJTOPPRECEDENCE1 = 30;
+  public int JJTOPPRECEDENCE2 = 31;
+  public int JJTOPPRECEDENCE3 = 32;
+  public int JJTOPPRECEDENCE4 = 33;
+  public int JJTOPPRECEDENCE5 = 34;
+  public int JJTOPPRECEDENCE6 = 35;
+  public int JJTOPPRECEDENCE7 = 36;
+  public int JJTOPPRECEDENCE8 = 37;
+  public int JJTLVALUE = 38;
+  public int JJTCALL = 39;
+  public int JJTACTUALS = 40;
+  public int JJTCONSTANT = 41;
 
 
   public String[] jjtNodeName = {
@@ -71,11 +78,18 @@ public interface MyNewGrammarTreeConstants
     "PrintStmt",
     "ExprList",
     "Expr",
-    "ExprPrime",
+    "OpPrecedence1",
+    "OpPrecedence2",
+    "OpPrecedence3",
+    "OpPrecedence4",
+    "OpPrecedence5",
+    "OpPrecedence6",
+    "OpPrecedence7",
+    "OpPrecedence8",
     "LValue",
     "Call",
     "Actuals",
     "Constant",
   };
 }
-/* JavaCC - OriginalChecksum=babad2756fb163c648962bc9ae9ce9c0 (do not edit this line) */
+/* JavaCC - OriginalChecksum=90f43838f5776ac583eae90bc5a81dd7 (do not edit this line) */

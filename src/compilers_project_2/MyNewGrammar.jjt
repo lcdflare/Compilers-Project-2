@@ -378,56 +378,64 @@ void ExprList() :
 void Expr() :
 {}
 {
-  LOOKAHEAD( < _id > ( ( < _leftparen > ) | ( < _period > < _id > < _leftparen > ) ) )
-  Call() ExprPrime()
-| 
-  LValue() [ < _assignop > Expr() ] ExprPrime()
-|
-  Constant() ExprPrime()
-|
-  < _leftparen > Expr() < _rightparen > ExprPrime()
-|
-  < _minus > Expr() ExprPrime()
-|
-  < _not > Expr() ExprPrime()
-|
-  < _readln > < _leftparen > < _rightparen > ExprPrime()
-|
-  < _new > < _leftparen > < _id > < _rightparen > ExprPrime()
-|
-  < _newarray > < _leftparen > < _intconstant > < _comma > Type() < _rightparen > ExprPrime()
+  OpPrecedence1()
 }
 
-void ExprPrime() :
+void OpPrecedence1() :
 {}
 {
-  < _plus > Expr()
-|
-  < _minus > Expr()
-|
-  < _multiplication > Expr()
-|
-  < _division > Expr()
-|
-  < _mod > Expr()
-|
-  < _less > Expr()
-|
-  < _lessequal > Expr()
-|
-  < _greater > Expr()
-|
-  < _greaterequal > Expr()
-|
-  < _equal > Expr()
-|
-  < _notequal > Expr()
-|
-  < _and > Expr()
-|
-  < _or > Expr()
-|
-  {}
+  OpPrecedence2() ( < _or > OpPrecedence2() )*
+}
+
+void OpPrecedence2() :
+{}
+{
+  OpPrecedence3() ( < _and > OpPrecedence3() )*
+}
+
+void OpPrecedence3() :
+{}
+{
+  OpPrecedence4() ( ( < _equal > | < _notequal > ) OpPrecedence4() )*
+}
+
+void OpPrecedence4() :
+{}
+{
+  OpPrecedence5() [ ( < _less > | < _lessequal > | < _greater > | < _greaterequal > ) OpPrecedence5() ]
+}
+
+void OpPrecedence5() :
+{}
+{
+  OpPrecedence6() ( ( < _plus > | < _minus > | < _mod > ) OpPrecedence6() )*
+}
+
+void OpPrecedence6() :
+{}
+{
+  OpPrecedence7() ( ( < _multiplication > | < _division > ) OpPrecedence7() )*
+}
+
+void OpPrecedence7() :
+{}
+{
+  OpPrecedence8() [ ( < _minus > | < _not > ) OpPrecedence8() ]
+}
+
+void OpPrecedence8() :
+{}
+{
+  LOOKAHEAD( < _id > ( ( < _leftparen > ) | ( < _period > < _id > < _leftparen > ) ) )
+  Call()
+| LValue() [ < _assignop > Expr() ]
+| Constant()
+| < _leftparen > Expr() < _rightparen >
+| < _minus > Expr()
+| < _not > Expr()
+| < _readln > < _leftparen > < _rightparen >
+| < _new > < _leftparen > < _id > < _rightparen >
+| < _newarray > < _leftparen > < _intconstant > < _comma > Type() < _rightparen >
 }
 
 void LValue() :
